@@ -5,4 +5,12 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+
+  resource :profiles, only: [:edit, :update]
+
+  resources :sections, only: [] do
+    member do
+      patch :rate
+    end
+  end
 end
