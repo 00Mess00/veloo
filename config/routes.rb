@@ -17,7 +17,6 @@ Rails.application.routes.draw do
 
   resources :section_warnings, only: [:update]
 
-
   resources :sections, only: [] do
     resources :section_warnings, only: [:new, :create]
     member do
