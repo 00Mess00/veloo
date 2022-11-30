@@ -7,7 +7,8 @@ Rails.application.routes.draw do
   # root "articles#index"
   resource :profiles, only: [:edit, :update]
 
-  resources :routes, only: [:new, :create, :show] do
+  resources :itineraries, only: [:new, :create, :show]
+  resources :routes, only: [:show] do
     member do
       patch :rate
     end

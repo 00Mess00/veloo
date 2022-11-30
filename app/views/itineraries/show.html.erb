@@ -1,0 +1,7 @@
+<h4>Itinéraire <%= @itinerary.departure %> -> <%= @itinerary.arrival %></h4>
+
+<ul>
+  <% @itinerary.routes.each do |route| %>
+    <li><%= route.distance.fdiv(1000).round(2) %>km / <%= route.duration.fdiv(60).round %> minutes</li>
+  <% end %>
+</ul>

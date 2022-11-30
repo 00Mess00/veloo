@@ -1,22 +1,47 @@
-class RoutesController < ApplicationController
-  def new
-    @route = Route.new
+require "open-uri"
+require "json"
+
+class MapboxDirectionsApiService
+  def initialize(itinerary:)
+    @itinerary = itinerary
+    @departure = @itinerary.departure
+    @arrival = @itinerary.arrival
   end
 
-  def create
-    @results = MapboxDirectionsApiService.new(
-                departure: route_params[:departure],
-                arrival: route_params[:arrival]).call
+  def call
+    departure_coordinates = Geocoder.search(@departure).first.coordinates
+    arrival_coordinates = Geocoder.search(@arrival).first.coordinates
 
-    @results[:routes].each do |route_data|
+    Mapbox.access_token = ENV["MAPBOX_API_KEY"]
+    drivingDirections = Mapbox::Directions.directions([{
+        longitude: departure_coordinates.last,
+        latitude: departure_coordinates.first
+      }, {
+        longitude: arrival_coordinates.last,
+        latitude: arrival_coordinates.first
+      }],
+      "cycling",
+      {
+        geometries: "polyline",
+        alternatives: true,
+        continue_straight: true,
+        annotations: "distance,duration",
+        language: "fr",
+        overview: "full",
+        steps: true
+      })
+
+    results = drivingDirections.first["routes"].sort_by { |route| route["weight"] }
+
+    results.each do |route_data|
       route = Route.new(
-        departure: route_params[:departure],
-        arrival: route_params[:arrival],
-        departure_lat: @results[:departure_coordinates].first,
-        departure_lng: @results[:departure_coordinates].last,
-        arrival_lat: @results[:arrival_coordinates].first,
-        arrival_lng: @results[:arrival_coordinates].last,
-        user: current_user,
+        departure: @departure,
+        arrival: @arrival,
+        departure_lat: departure_coordinates.first,
+        departure_lng: departure_coordinates.last,
+        arrival_lat: arrival_coordinates.first,
+        arrival_lng: arrival_coordinates.last,
+        itinerary: @itinerary,
         weight: route_data["weight"],
         distance: route_data["distance"],    # distance en mètres
         duration: route_data["duration"]     # durée en secondes
@@ -55,18 +80,5 @@ class RoutesController < ApplicationController
         end
       end
     end
-  end
-
-  def show
-    @route = Route.find(params[:id])
-  end
-
-  def rate
-  end
-
-  private
-
-  def route_params
-    params.require(:route).permit(:departure, :arrival)
   end
 end
