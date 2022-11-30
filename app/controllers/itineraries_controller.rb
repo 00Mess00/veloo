@@ -10,7 +10,7 @@ class ItinerariesController < ApplicationController
     if @itinerary.save
       @results = MapboxDirectionsApiService.new(itinerary: @itinerary).call
 
-      # redirect_to itinerary_path(@itinerary)
+      redirect_to itinerary_path(@itinerary)
     else
       render :new, status: :unprocessable_entity
     end
