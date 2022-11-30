@@ -10,9 +10,56 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_29_104353) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_29_152544) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bookmarks", force: :cascade do |t|
+    t.string "address"
+    t.string "name"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_bookmarks_on_user_id"
+  end
+
+  create_table "routes", force: :cascade do |t|
+    t.string "departure"
+    t.string "arrival"
+    t.string "route_type"
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.float "departure_lat"
+    t.float "departure_lng"
+    t.float "arrival_lat"
+    t.float "arrival_lng"
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_routes_on_user_id"
+  end
+
+  create_table "section_warnings", force: :cascade do |t|
+    t.string "warning_type"
+    t.float "lng"
+    t.float "lat"
+    t.bigint "section_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["section_id"], name: "index_section_warnings_on_section_id"
+  end
+
+  create_table "sections", force: :cascade do |t|
+    t.float "cyclability"
+    t.float "to_lng"
+    t.bigint "route_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.float "from_lat"
+    t.float "from_lng"
+    t.float "to_lat"
+    t.string "geometry"
+    t.index ["route_id"], name: "index_sections_on_route_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -22,8 +69,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_29_104353) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "nick_name"
+    t.string "address"
+    t.string "skills"
+    t.string "bike_type"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "bookmarks", "users"
+  add_foreign_key "routes", "users"
+  add_foreign_key "section_warnings", "sections"
+  add_foreign_key "sections", "routes"
 end
