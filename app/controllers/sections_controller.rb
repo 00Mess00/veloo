@@ -8,5 +8,4 @@ class SectionsController < ApplicationController
 
   def rate
   end
-
 end
