@@ -10,7 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_30_154556) do
+
+ActiveRecord::Schema[7.0].define(version: 2022_11_30_145129) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -51,6 +53,24 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_30_154556) do
     t.index ["user_id"], name: "index_bookmarks_on_user_id"
   end
 
+  create_table "itineraries", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "departure"
+    t.string "arrival"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_itineraries_on_user_id"
+  end
+
+  create_table "route_sections", force: :cascade do |t|
+    t.bigint "section_id", null: false
+    t.bigint "route_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["route_id"], name: "index_route_sections_on_route_id"
+    t.index ["section_id"], name: "index_route_sections_on_section_id"
+  end
+
   create_table "routes", force: :cascade do |t|
     t.string "departure"
     t.string "arrival"
@@ -62,8 +82,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_30_154556) do
     t.float "departure_lng"
     t.float "arrival_lat"
     t.float "arrival_lng"
-    t.bigint "user_id"
-    t.index ["user_id"], name: "index_routes_on_user_id"
+    t.float "duration"
+    t.float "distance"
+    t.float "weight"
+    t.bigint "itinerary_id", null: false
+    t.index ["itinerary_id"], name: "index_routes_on_itinerary_id"
   end
 
   create_table "section_warnings", force: :cascade do |t|
@@ -79,14 +102,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_30_154556) do
   create_table "sections", force: :cascade do |t|
     t.float "cyclability"
     t.float "to_lng"
-    t.bigint "route_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float "from_lat"
     t.float "from_lng"
     t.float "to_lat"
     t.string "geometry"
-    t.index ["route_id"], name: "index_sections_on_route_id"
+    t.string "name"
+    t.float "weight"
+    t.string "instruction"
   end
 
   create_table "users", force: :cascade do |t|
@@ -110,7 +134,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_30_154556) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bookmarks", "users"
-  add_foreign_key "routes", "users"
+  add_foreign_key "itineraries", "users"
+  add_foreign_key "route_sections", "routes"
+  add_foreign_key "route_sections", "sections"
+  add_foreign_key "routes", "itineraries"
   add_foreign_key "section_warnings", "sections"
-  add_foreign_key "sections", "routes"
 end
