@@ -8,14 +8,28 @@ class MapboxDirectionsApiService
   end
 
   def call
-    departure_coordinates = Geocoder.search(@departure).first.coordinates.reverse.join(",")
-    arrival_coordinates = Geocoder.search(@arrival).first.coordinates.reverse.join(",")
+    departure_coordinates = Geocoder.search(@departure).first.coordinates
+    arrival_coordinates = Geocoder.search(@arrival).first.coordinates
 
-    coordinates = [departure_coordinates, arrival_coordinates].join(";")
+    Mapbox.access_token = ENV["MAPBOX_API_KEY"]
+    drivingDirections = Mapbox::Directions.directions([{
+        longitude: departure_coordinates.last,
+        latitude: departure_coordinates.first
+      }, {
+        longitude: arrival_coordinates.last,
+        latitude: arrival_coordinates.first
+      }],
+      "cycling",
+      {
+        geometries: "polyline",
+        alternatives: true,
+        continue_straight: true,
+        annotations: "distance,duration",
+        language: "fr",
+        overview: "full",
+        steps: true
+      })
 
-    response = URI.open("https://api.mapbox.com/directions/v5/mapbox/cycling/#{coordinates}?alternatives=true&continue_straight=true&geometries=polyline&annotations=distance,duration&language=fr&overview=full&steps=true&access_token=#{ENV['MAPBOX_API_KEY']}").read
-    data = JSON.parse(response)
-
-    p data
+    p drivingDirections
   end
 end

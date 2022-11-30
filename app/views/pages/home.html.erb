@@ -17,15 +17,15 @@
 <% end %>
 
 <div>
-  <% @routes["routes"].sort_by { |route| -route["weight"] }.each do |route| %>
+  <% @routes.first["routes"].sort_by { |route| -route["weight"] }.each do |route| %>
     <ul>
       <li>Cyclabilité : <%= route["weight"] %> </li>
       <li>
         <ul>
           Sections :
-          <% route["legs"].first["steps"].each do |leg| %>
+          <% route["legs"].first["steps"].each do |step| %>
             <li>
-              <%= leg["maneuver"]["instruction"] %> : <%= leg["geometry"] %>
+              <%= step %>
             </li>
           <% end %>
         </ul>
