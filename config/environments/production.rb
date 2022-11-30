@@ -1,7 +1,7 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  config.action_mailer.default_url_options = { host: "https://www.notion.so/Veloo-app-8ab789002baa4f4a8ad666687ba63018" }
+  config.action_mailer.default_url_options = { host: "https://veloo.herokuapp.com/" }
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
