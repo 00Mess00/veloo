@@ -5,6 +5,7 @@
     "@hotwired/stimulus": "^3.2.0",
     "@hotwired/turbo-rails": "^7.2.4",
     "@mapbox/mapbox-gl-geocoder": "^5.0.1",
+    "@mapbox/polyline": "^1.1.1",
     "@popperjs/core": "^2.11.6",
     "bootstrap": "^5.2.3",
     "webpack": "^5.75.0",
