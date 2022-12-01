@@ -4,7 +4,7 @@ class Itinerary < ApplicationRecord
 
   validates :departure, :arrival, presence: true
 
-  def get_bounds
+  def bounds
     [
       [ routes.first.departure_lng, routes.first.departure_lat ],
       [ routes.first.arrival_lng, routes.first.arrival_lat ],
