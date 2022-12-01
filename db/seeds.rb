@@ -24,12 +24,9 @@ puts 'Creating 3 users...'
 gaetan = User.new(
   email: "gaetan@example.com",
   password: "password",
-  first_name: "Gaetan",
-  last_name: "Renault",
-  nick_name: "Get",
-  address: "11 Rue Jules Simon, 35000 Rennes",
   skills: "Débutant",
-  bike_type: "Tout chemin"
+  bike_type: "Tout chemin",
+  average_speed: 15.5
 )
 file = URI.open("https://res.cloudinary.com/dbxzydbfe/image/upload/v1669129984/BB13CBED-3EC2-49A4-B6B5-3D185549A390_x7rmdr.jpg")
 gaetan.photo.attach(io: file, filename: "Gaetan.jpg", content_type: "image/jpg")
@@ -38,12 +35,9 @@ gaetan.save!
 quentin = User.new(
   email: "quentin@example.com",
   password: "password",
-  first_name: "Quentin",
-  last_name: "Orhant",
-  nick_name: "Quentino",
-  address: "2 Rue du Pré du Bois, 35000 Rennes",
   skills: "Expert",
-  bike_type: "Cargo"
+  bike_type: "Cargo",
+  average_speed: 22.5
 )
 file = URI.open("https://res.cloudinary.com/dbxzydbfe/image/upload/v1669129722/avatar_sakuoe.jpg")
 quentin.photo.attach(io: file, filename: "Quentin.jpg", content_type: "image/jpg")
@@ -52,12 +46,9 @@ quentin.save!
 guillaume = User.new(
   email: "guillaume@example.com",
   password: "password",
-  first_name: "Guillaume",
-  last_name: "Messieux",
-  nick_name: "Guigui",
-  address: "230 Route de Ste-Foix, 35000 Rennes",
   skills: "Avancé",
-  bike_type: "Classique"
+  bike_type: "Classique",
+  average_speed: 20.5
 )
 file = URI.open("https://res.cloudinary.com/wagon/image/upload/c_fill,g_face,h_200,w_200/v1665432330/jjmpgh36k9njifsmq2ak.jpg")
 guillaume.photo.attach(io: file, filename: "Guillaume.jpg", content_type: "image/jpg")
