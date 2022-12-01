@@ -10,5 +10,5 @@
   data-map-markers-value="<%= @markers.to_json %>"
   data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
   data-map-routes-value="<%= @itinerary.routes.map(&:sections).to_json %>"
-  data-map-bounds-value="<%= @itinerary.get_bounds.to_json %>">
+  data-map-bounds-value="<%= @itinerary.bounds.to_json %>">
 </div>
