@@ -4,5 +4,14 @@ class ProfilesController < ApplicationController
   end
 
   def update
+    @user = current_user
+    @user.update(user_params)
   end
+end
+
+
+private
+
+def user_params
+  params.require(:user).permit(:email, :skills, :bike_type, :average_speed)
 end
