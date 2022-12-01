@@ -85,7 +85,7 @@ export default class extends Controller {
 
         // Pour chaque section
         sectionCoordinates.forEach((sectionCoordinate) => {
-          const colors = ['#2986cc', '#ce7e00', '#ffd966', '#ea9999']
+          const colors = ['#00FFFF', '#FF0000', '#FFFF00', '#000000']
 
           // Je crée une source avec un nom unique
           this.map.addSource(`route-${sectionCoordinate.id}`, {

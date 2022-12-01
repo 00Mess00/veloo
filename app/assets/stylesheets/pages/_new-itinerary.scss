@@ -1,0 +1,15 @@
+#new_itinerary {
+  position:absolute;
+  top:80px;
+}
+.new-itinerary-arrival {
+  .mapboxgl-ctrl-geocoder {
+    z-index: 0;
+  }
+}
+
+.itinerary-search-fields {
+  .mb-3 {
+    display:none;
+  }
+}

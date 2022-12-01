@@ -8,8 +8,10 @@ export default class extends Controller {
   static targets = ["address"]
 
   connect() {
+    const input = document.querySelector('.mapboxgl-ctrl-geocoder--input')
     this.geocoder = new MapboxGeocoder({
       accessToken: this.apiKeyValue,
+      placeholder: 'Où allons-nous',
       types: "country,region,place,postcode,locality,neighborhood,address"
     })
     this.geocoder.addTo(this.element)
