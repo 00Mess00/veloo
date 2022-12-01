@@ -1,11 +1,13 @@
-<%= simple_form_for @itinerary do |f| %>
-  <div data-controller="address-autocomplete" data-address-autocomplete-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
-    <%= f.input :departure, input_html: { data: {address_autocomplete_target: "address"}, class: "d-none" } %>
-  </div>
+<div class="container">
+  <%= simple_form_for @itinerary do |f| %>
+    <div class="itinerary-search-fields" data-controller="address-autocomplete" data-address-autocomplete-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+      <%= f.input :departure, input_html: { data: {address_autocomplete_target: "address"}, class: "d-none" } %>
+    </div>
 
-  <div data-controller="address-autocomplete" data-address-autocomplete-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
-    <%= f.input :arrival, input_html: { data: {address_autocomplete_target: "address"}, class: "d-none" } %>
-  </div>
+    <div class="itinerary-search-fields new-itinerary-arrival" data-controller="address-autocomplete" data-address-autocomplete-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+      <%= f.input :arrival, input_html: { data: {address_autocomplete_target: "address"}, class: "d-none" } %>
+    </div>
 
-  <%= f.submit %>
-<% end %>
+    <%= f.submit "Chercher mon itinéraire", class:"w-100 mt-3 btn btn-primary" %>
+  <% end %>
+</div>
