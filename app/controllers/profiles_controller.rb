@@ -13,5 +13,5 @@ end
 private
 
 def user_params
-  params.require(:user).permit(:email, :skills, :bike_type, :average_speed)
+  params.require(:user).permit(:email, :skills, :bike_type, :average_speed, :visual_impairment)
 end
