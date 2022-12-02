@@ -1,0 +1,41 @@
+<div
+    data-controller="route"
+    data-route-markers-value="<%= @markers.to_json %>"
+    data-route-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
+    data-route-routes-value="<%= [@route.sections].to_json %>"
+    data-route-bounds-value="<%= @route.itinerary.bounds.to_json %>">
+  <div class="navigation">
+    <div class="directions">
+      <div class="d-flex">
+        <div class="arrows">
+          <%= image_tag 'dir_half_turn_green.png' %>
+          <h2>200 m</h2>
+        </div>
+        <div class="instructions">
+          <h2 data-route-target="instruction">Avenue Janvier</h2>
+          <h3>puis <span data-route-target="nextInstruction">Place de Bretagne</span></h3>
+        </div>
+      </div>
+      <div class="line-direction"></div>
+    </div>
+    <div class="summary">
+      <div class="clock item">
+        <%= image_tag 'bottom_clock.png', width: '17', height: '16', :class => ""  %>
+        <p><strong><%= @route.duration.fdiv(60).round %></strong> min</p>
+      </div>
+      <div class="distance item">
+        <%= image_tag 'bottom_distance.png', width: '17', height: '16', :class => ""  %>
+        <p><strong><%= @route.distance.fdiv(1000).round(2) %></strong> km</p>
+      </div>
+      <div class="arrival item">
+        <%= image_tag 'bottom_flag.png', width: '11', height: '12', :class => ""  %>
+        <p><strong><%= (Time.now + @route.duration.fdiv(60).round.minutes).strftime("%Hh%M") %></strong></p>
+      </div>
+    </div>
+  </div>
+  <div
+    class="map-route"
+    id="map"
+    >
+  </div>
+</div>
