@@ -9,7 +9,7 @@
     quam cum excepturi aut aliquid tempora impedit cupiditate.</p>
     </div>
     <div>
-      <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: :false }) do |f| %>
+      <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), data: { turbo: :false }) do |f| %>
         <div class="form-inputs text-start">
           <div class="email">
             <%= f.input :email,
