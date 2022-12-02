@@ -1,0 +1,26 @@
+.itinerary-resume {
+  display:flex;
+  flex-direction: column;
+  gap:8px;
+}
+
+.itinerary-infos {
+  padding:8px 12px;
+  border:1px solid $black-400;
+  border-radius: 8px;
+  img {
+    height: 20px;
+    width: 16px;
+  }
+}
+
+.itinerary-head {
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.itinerary {
+  padding:12px 0px;
+  display: flex;
+  justify-content: space-between;
+}

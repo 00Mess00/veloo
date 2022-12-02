@@ -13,12 +13,42 @@
       </div>
     <% end %>
   </div>
-  <div class="itinerary-wrapper">
-  <p>Itinéraire <%= @itinerary.departure %> -> <%= @itinerary.arrival %></p>
-    <div class="itineraries">
-      <% @itinerary.routes.each_with_index do |route, index| %>
-        <div id=<%= index %> class="itinerary" data-action="click->hello#displayItinerary"><%= route.distance.fdiv(1000).round(2) %>km / <%= route.duration.fdiv(60).round %> minutes</div>
-      <% end %>
+  <div>
+    <div class="itinerary-wrapper">
+      <div class="itinerary-resume">
+        <span class="p--tiny itinerary-infos">
+          <%= image_tag 'pin_start'%>
+          <%= @itinerary.departure %>
+        </span>
+        <span class="p--tiny itinerary-infos">
+          <%= image_tag 'pin_arrival' %>
+          <%= @itinerary.arrival %>
+        </span>
+      </div>
+      <div class="itineraries">
+        <% @itinerary.routes.each_with_index do |route, index| %>
+        <div class="itinerary-card mt-3">
+          <div class="itinerary-head">
+            <p class = "label m-0">le plus court</p>
+            <%= link_to "Démarrer ce trajet", route_path(route) %>
+          </div>
+          <div id=<%= index %> class="itinerary" data-action="click->hello#displayItinerary">
+            <span>
+              <%= image_tag 'bottom_distance' %>
+              <%= route.distance.fdiv(1000).round(2) %>km
+            </span>
+            <span>
+              <%= image_tag 'bottom_clock' %>
+              <%= route.duration.fdiv(60).round %> min.
+            </span>
+            <span>
+
+              <%= route.weight.fdiv(1).round %> veloo</div>
+            </span>
+          </div>
+        </div>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>

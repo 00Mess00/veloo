@@ -10,6 +10,7 @@
 .carousel-item {
   padding:32px;
   text-align:center;
+  position: relative;
 
   p {
     //width:50%;
@@ -35,33 +36,7 @@
   background: $green;
 }
 
-.carousel {
-  width:100vw;
-  height:100vh;
-}
-
-.carousel-inner, .carousel-item {
-  height:100%;
-}
-
-.carousel-item {
-  padding:48px;
-  text-align:center;
-
-  p {
-    width:50%;
-    margin:0 auto;
-  }
-}
-
-.carousel-item:nth-child(1) {
-  background:$yellow;
-}
-
-.carousel-item:nth-child(2) {
-  background:$blue;
-}
-
-.carousel-item:nth-child(3) {
-  background:$green;
+.btn_home {
+  // position: absolute;
+  // bottom: 100px;
 }
