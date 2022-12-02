@@ -1,9 +1,67 @@
-// Specific CSS for your home-page
-.mapboxgl-ctrl-geocoder {
-  max-width: none;
-  width: 100%;
-  border: 1px solid lightgrey;
-  box-shadow: none;
-  background-color: transparent;
-  z-index : 1000;
+.carousel {
+  width:100vw;
+  height:100vh;
+}
+
+.carousel-inner, .carousel-item {
+  height:100%;
+}
+
+.carousel-item {
+  padding:32px;
+  text-align:center;
+
+  p {
+    //width:50%;
+    margin:0 auto;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  p, h1 {
+    opacity: 50%;
+  }
+}
+
+.carousel-item:nth-child(1) {
+  background: $yellow;
+}
+
+.carousel-item:nth-child(2) {
+  background: $blue;
+}
+
+.carousel-item:nth-child(3) {
+  background: $green;
+}
+
+.carousel {
+  width:100vw;
+  height:100vh;
+}
+
+.carousel-inner, .carousel-item {
+  height:100%;
+}
+
+.carousel-item {
+  padding:48px;
+  text-align:center;
+
+  p {
+    width:50%;
+    margin:0 auto;
+  }
+}
+
+.carousel-item:nth-child(1) {
+  background:$yellow;
+}
+
+.carousel-item:nth-child(2) {
+  background:$blue;
+}
+
+.carousel-item:nth-child(3) {
+  background:$green;
 }
