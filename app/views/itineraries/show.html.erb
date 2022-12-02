@@ -30,7 +30,7 @@
         <div class="itinerary-card mt-3">
           <div class="itinerary-head">
             <p class = "label m-0">le plus court</p>
-            <a href="">Démarrer ce trajet</a>
+            <%= link_to "Démarrer ce trajet", route_path(route) %>
           </div>
           <div id=<%= index %> class="itinerary" data-action="click->hello#displayItinerary">
             <span>
