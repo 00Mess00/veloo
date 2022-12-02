@@ -10,13 +10,13 @@ export default class extends Controller {
     markers: Array
   }
 
-  static targets = ["instruction", "next-instruction"]
+  static targets = ["instruction", "nextInstruction"]
 
   connect() {
     mapboxgl.accessToken = this.apiKeyValue
-
+    const mapContainer = document.getElementById("map")
     this.map = new mapboxgl.Map({
-      container: this.element,
+      container: mapContainer,
       style: "mapbox://styles/mapbox/streets-v10"
     })
 
@@ -51,6 +51,11 @@ export default class extends Controller {
 
     // Donc pour chaque route
     this.routesValue.forEach((route) => {
+      //console.log(route)
+      this.instructionTarget.innerText = route[0].name
+      this.nextInstructionTarget.innerText = route[1].name
+      //this.instructionTargets.innerText;
+
       // Pour chaque section de la route
       route.forEach((section) => {
         // Je transforme la polyline en Array de coordonnées avec un module mapbox
