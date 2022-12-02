@@ -1,0 +1,7 @@
+<%= form_with model: @bookmark do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+  <%= f.label :address %>
+  <%= f.text_field :address %>
+  <%= f.submit "Enregistrer"%>
+<% end %>

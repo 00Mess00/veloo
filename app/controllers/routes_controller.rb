@@ -5,4 +5,5 @@ class RoutesController < ApplicationController
 
   def rate
   end
+
 end
