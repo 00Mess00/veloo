@@ -1,3 +1,4 @@
+<%= render "shared/navbar" %>
 <div class="container">
   <%= simple_form_for @itinerary do |f| %>
     <div class="itinerary-search-fields" data-controller="address-autocomplete" data-address-autocomplete-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
