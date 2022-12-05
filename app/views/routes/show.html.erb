@@ -1,4 +1,5 @@
 <div
+    id="route-map"
     data-controller="route"
     data-route-markers-value="<%= @markers.to_json %>"
     data-route-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
@@ -40,9 +41,9 @@
     <%= link_to  "new_section_section_warning_path" do %>
       <%= image_tag "warning.svg", :class => "warning iconMapShadow" %>
     <% end %>
-    <%= link_to  "new_section_section_warning_path" do %>
+    <div data-controller="warnings" data-action="click->warnings#addWarning" data-warnings-url-value="<%= section_section_warnings_path("quentin") %>" >
       <%= image_tag "warning_splash.svg", :class => "warning_splash iconMapShadow" %>
-    <% end %>
+    </div>
     <%= link_to  "new_section_section_warning_path" do %>
       <%= image_tag "warning_obstacle.svg", :class => "warning_obstacle iconMapShadow" %>
     <% end %>
