@@ -1,7 +1,10 @@
-.form-control {
-  background: $white;
+.form-control, .form-select {
   box-shadow: $main-shadow;
   border-radius: 10px;
+}
+
+.form-control {
+  background: #F4F4F4;
 }
 
 .form-label {

@@ -8,30 +8,28 @@
       <p class="p--tiny">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel placeat
     quam cum excepturi aut aliquid tempora impedit cupiditate.</p>
     </div>
-    <div>
-      <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), data: { turbo: :false }) do |f| %>
-        <div class="form-inputs text-start">
-          <div class="email">
-            <%= f.input :email,
-                        required: false,
-                        autofocus: true,
-                        input_html: { autocomplete: " Adresse email" } %>
-          </div>
-          <div class="password">
-            <%= f.input :password,label: "Mot de passe",
-                        required: false,
-                        input_html: { autocomplete: "Mot de passe" } %>
-          </div>
-          <div class="deficience">
-            <%= f.input :visual_impairment, label: "Déficience visuelle",
-                        collection: ["Aucune déficience","Daltonisme"],
-                        required: false
-                        %>
-          </div>
-            <%= f.input :remember_me, label: "Rester connecté", as: :boolean if devise_mapping.rememberable? %>
+    <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), data: { turbo: :false }) do |f| %>
+      <div class="form-inputs text-start">
+        <div class="email">
+          <%= f.input :email,
+                      required: false,
+                      autofocus: true,
+                      input_html: { autocomplete: " Adresse email" } %>
+        </div>
+        <div class="password">
+          <%= f.input :password,label: "Mot de passe",
+                      required: false,
+                      input_html: { autocomplete: "Mot de passe" } %>
+        </div>
+        <div class="deficience">
+          <%= f.input :visual_impairment, label: "Déficience visuelle",
+                      collection: ["Aucune déficience","Daltonisme"],
+                      selected: 1,
+                      required: false
+                      %>
         </div>
 
-        <div class="skills_chekbox">
+        <div class="skills_chekbox text-start">
           <%= f.input :skills,label: "Expérience",
             as: :radio_buttons,
             collection_wrapper_tag: 'div',
@@ -41,11 +39,12 @@
             collection: User::SKILLS %>
         </div>
 
+        <%= f.input :remember_me, label: "Rester connecté", as: :boolean if devise_mapping.rememberable? %>
+      </div>
       <div class="form-actions">
         <%= f.button :submit, "Créer mon compte", class:'btn btn-primary mt-4' %>
       </div>
     <% end %>
-
     <%= render "devise/shared/links" %>
   </div>
 </div>
