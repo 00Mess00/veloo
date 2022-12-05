@@ -28,6 +28,9 @@
                       required: false
                       %>
         </div>
+        <div>
+          <%= f.input :photo, as: :file, label: "Photo" %>
+        </div>
 
         <div class="skills_chekbox text-start">
           <%= f.input :skills,label: "Expérience",
@@ -42,7 +45,7 @@
         <%= f.input :remember_me, label: "Rester connecté", as: :boolean if devise_mapping.rememberable? %>
       </div>
       <div class="form-actions">
-        <%= f.button :submit, "Créer mon compte", class:'btn btn-primary mt-4' %>
+        <%= f.button :submit, "Créer mon compte", class:'btn btn-primary mt-3' %>
       </div>
     <% end %>
     <%= render "devise/shared/links" %>
