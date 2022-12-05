@@ -18,21 +18,21 @@
                         input_html: { autocomplete: " Adresse email" } %>
           </div>
           <div class="password">
-            <%= f.input :password,
+            <%= f.input :password,label: "Mot de passe",
                         required: false,
                         input_html: { autocomplete: "Mot de passe" } %>
           </div>
           <div class="deficience">
-            <%= f.input :visual_impairment,
+            <%= f.input :visual_impairment, label: "Déficience visuelle",
                         collection: ["Aucune déficience","Daltonisme"],
                         required: false
                         %>
           </div>
-            <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
+            <%= f.input :remember_me, label: "Rester connecté", as: :boolean if devise_mapping.rememberable? %>
         </div>
 
         <div class="skills_chekbox">
-          <%= f.input :skills,
+          <%= f.input :skills,label: "Expérience",
             as: :radio_buttons,
             collection_wrapper_tag: 'div',
             collection_wrapper_class: 'category-wrapper',
@@ -41,8 +41,8 @@
             collection: User::SKILLS %>
         </div>
 
-      <div class="form-actions mb-4">
-        <%= f.button :submit, "Je créee mon compte", class:'btn btn-primary' %>
+      <div class="form-actions">
+        <%= f.button :submit, "Créer mon compte", class:'btn btn-primary mt-4' %>
       </div>
     <% end %>
 

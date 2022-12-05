@@ -20,19 +20,77 @@
   }
 
   .category-selector + label {
-    display: block;
+    display: flex;
+    flex-direction: column-reverse;
     cursor: pointer;
     box-sizing: border-box;
-    width: 100%;
+    width: 102%;
     font-size: 12px;
-    text-align: left;
-    padding: 10px 10px 30px 10px;
+    color: white;
+    text-align: center;
+    padding: 10px 10px 0px 10px;
     border: 1px solid #EAEAEA;
     border-radius: 4px;
     background-color: white;
   }
 
   .category-selector:checked + label {
-    color: white !important;
+    color: $yellow !important;
+  }
+  /* Icon débutant de base */
+  #user_skills_débutant + label {
+    background: image-url('cyclist_1.png'), transparent;
+    background-size: 75%;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: 0.2rem;
+    aspect-ratio: 1/1;
+    // font-size: 2 !important;
+  }
+  /* Statut checke */
+  #user_skills_débutant:checked + label {
+    background: image-url('cyclist_1_active.png'), white;
+    background-size: 75%;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: 0.2rem;
+    aspect-ratio: 1/1;
+    // font-size: 0 !important;
+  }
+  #user_skills_intermédiaire + label {
+    background: image-url('cyclist_2.png'), transparent;
+    background-size: 75%;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: 0.2rem;
+    aspect-ratio: 1/1;
+    // font-size: 0 !important;
+  }
+  #user_skills_intermédiaire:checked + label {
+    background: image-url('cyclist_2_active.png'), white;
+    background-size: 75%;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: 0.2rem;
+    aspect-ratio: 1/1;
+    // font-size: 0 !important;
+  }
+  #user_skills_expert + label {
+    background: image-url('cyclist_3.png'), transparent;
+    background-size: 75%;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: 0.2rem;
+    aspect-ratio: 1/1;
+    // font-size: 0 !important;
+  }
+  #user_skills_expert:checked + label {
+    background: image-url('cyclist_3_active.png'), white;
+    background-size: 75%;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: 0.2rem;
+    aspect-ratio: 1/1;
+    // font-size: 0 !important;
   }
 }
