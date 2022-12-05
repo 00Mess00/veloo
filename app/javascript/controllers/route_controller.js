@@ -13,6 +13,10 @@ export default class extends Controller {
   static targets = ["instruction", "nextInstruction"]
 
   connect() {
+    navigator.geolocation.getCurrentPosition = function(successCallback, errorCallback) {
+      successCallback({coords:{latitude:48.104358015568515, longitude:-1.6639229317600917}});
+    }
+    this.element.controller = this
     mapboxgl.accessToken = this.apiKeyValue
     const mapContainer = document.getElementById("map")
     this.map = new mapboxgl.Map({
@@ -130,5 +134,4 @@ export default class extends Controller {
     // OPTIONNEL MAIS COOL : Il faudrait aussi créer une layer par route qu'on pourrait afficher / cacher quand on choisit une route
     //                       mais je sais pas si c'est possible d'ajouter une layer à une layer. On peut se garder ça pour plus tard.
   }
-
 }

@@ -1,4 +1,5 @@
 <div
+    id="route-map"
     data-controller="route"
     data-route-markers-value="<%= @markers.to_json %>"
     data-route-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
@@ -20,18 +21,52 @@
     </div>
     <div class="summary">
       <div class="clock item">
-        <%= image_tag 'bottom_clock.png', width: '17', height: '16', :class => ""  %>
+        <%= image_tag 'bottom_clock.svg', width: '20', height: '40', :class => ""  %>
         <p><strong><%= @route.duration.fdiv(60).round %></strong> min</p>
       </div>
       <div class="distance item">
-        <%= image_tag 'bottom_distance.png', width: '17', height: '16', :class => ""  %>
+        <%= image_tag 'bottom_distance.svg', width: '20', height: '40', :class => ""  %>
         <p><strong><%= @route.distance.fdiv(1000).round(2) %></strong> km</p>
       </div>
       <div class="arrival item">
-        <%= image_tag 'bottom_flag.png', width: '11', height: '12', :class => ""  %>
+        <%= image_tag 'bottom_flag.svg', width: '20', height: '40', :class => ""  %>
         <p><strong><%= (Time.now + @route.duration.fdiv(60).round.minutes).strftime("%Hh%M") %></strong></p>
       </div>
+      <div class="cancel-travel item">
+        <%= image_tag 'cancel_travel.svg', width: '40', height: '40', :class => ""  %>
+      </div>
     </div>
+  </div>
+  <div class="warnings">
+    <%= link_to  "new_section_section_warning_path" do %>
+      <%= image_tag "warning.svg", :class => "warning iconMapShadow" %>
+    <% end %>
+    <div data-controller="warnings" data-action="click->warnings#addWarning" data-warnings-url-value="<%= section_section_warnings_path("quentin") %>" >
+      <%= image_tag "warning_splash.svg", :class => "warning_splash iconMapShadow" %>
+    </div>
+    <%= link_to  "new_section_section_warning_path" do %>
+      <%= image_tag "warning_obstacle.svg", :class => "warning_obstacle iconMapShadow" %>
+    <% end %>
+    <%= link_to  "new_section_section_warning_path" do %>
+      <%= image_tag "warning_double_parking.svg", :class => "warning_parking iconMapShadow" %>
+    <% end %>
+    <%= link_to  "new_section_section_warning_path" do %>
+      <%= image_tag "warning_dog.svg", :class => "warning_dog iconMapShadow" %>
+    <% end %>
+  </div>
+  <div class="cyclab">
+    <%= link_to  "new_section_section_warning_path" do %>
+      <%= image_tag "cyclab_BAD.svg", :class => "cyclab-bad iconMapShadow" %>
+    <% end %>
+    <%= link_to  "new_section_section_warning_path" do %>
+      <%= image_tag "cyclab_MIDDLE.svg", :class => "cyclab-middle iconMapShadow" %>
+    <% end %>
+    <%= link_to  "new_section_section_warning_path" do %>
+      <%= image_tag "cyclab_GOOD.svg", :class => "cyclab-good iconMapShadow" %>
+    <% end %>
+  </div>
+  <div>
+    <%= image_tag "nav.png", :class => "navigation-icon iconMapShadow" %>
   </div>
   <div
     class="map-route"

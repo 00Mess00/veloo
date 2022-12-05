@@ -7,3 +7,57 @@
   object-fit: cover;
   z-index: -1;
 }
+
+.warning {
+  position: absolute;
+  bottom: 70px;
+  right: 15px;
+}
+
+.cyclab-good {
+  position: absolute;
+  bottom: 280px;
+  left: 10px;
+}
+
+.cyclab-middle {
+  position: absolute;
+  bottom: 180px;
+  left: 10px;
+}
+
+.cyclab-bad {
+  position: absolute;
+  bottom: 80px;
+  left: 10px;
+}
+
+.warning_obstacle {
+  position: absolute;
+  right: 15px;
+  bottom: 160px;
+}
+
+.warning_splash {
+  position: absolute;
+  right: 15px;
+  bottom: 250px;
+}
+
+.warning_parking {
+  position: absolute;
+  right: 15px;
+  bottom: 340px;
+}
+
+.warning_dog {
+  position: absolute;
+  right: 15px;
+  bottom: 430px;
+}
+
+.navigation-icon {
+  position: absolute;
+  bottom: 60px;
+  right: calc(50% - 41px);
+}
