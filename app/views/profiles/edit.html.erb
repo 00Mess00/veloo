@@ -1,20 +1,51 @@
 <div class="background">
-  <div class="container d-flex new-form">
-    <div class="row">
-      <div class="col-sm d-flex justify-content-center">
-        <div class="rounded p-3">
-          <h3 class="text-center">Profile utilisateur</h3>
-          <%= simple_form_for @user, url: profiles_path, method: "put" do |f| %>
-            <%= f.input :skills, label: "Niveau de pratique", collection: ["Débutant", "Intermédiaire", "Expert"] %>
-            <%= f.input :bike_type, label: "Type de vélo", collection: ["Classique", "Tout chemin", "Cargo"] %>
-            <%= f.input :average_speed, label: "Vitesse moyenne" %>
-            <%= f.input :photo, as: :file, label: "Photo"%>
-            <div class="d-flex text-center justify-content-around p-2">
-              <%= f.submit "Enregistrer !",class: 'btn btn-primary' %>
-            </div>
-            <% end %>
-        </div>
-      </div>
+  <div class="py-4 container text-center">
+   <div class="logo_velo_yellow">
+    <%= image_tag "veloo_yellow.png" %>
+   </div>
+    <div class="title">
+      <h1 class="my-3">Mon compte</h1>
     </div>
+    <%= simple_form_for @user, url: profiles_path, method: "put" do |f| %>
+      <div class="form-inputs text-start">
+        <div class="email">
+          <%= f.input :email,
+                      required: false,
+                      autofocus: true,
+                      input_html: { autocomplete: " Adresse email" } %>
+        </div>
+        <div class="password">
+          <%= f.input :password,label: "Mot de passe",
+                      required: false,
+                      input_html: { autocomplete: "Mot de passe" } %>
+        </div>
+        <div class="deficience">
+          <%= f.input :visual_impairment, label: "Déficience visuelle",
+                      collection: ["Aucune déficience","Daltonisme"],
+                      selected: 1,
+                      required: false
+                      %>
+        </div>
+        <div>
+            <%= f.input :average_speed, label: "Vitesse moyenne" %>
+            <%= f.input :photo, as: :file, label: "Photo" %>
+        </div>
+
+
+        <div class="skills_chekbox text-start">
+          <%= f.input :skills,label: "Expérience",
+            as: :radio_buttons,
+            collection_wrapper_tag: 'div',
+            collection_wrapper_class: 'category-wrapper',
+            item_wrapper_class: 'category-item',
+            input_html: {class: 'category-selector'},
+            collection: User::SKILLS %>
+        </div>
+
+      </div>
+      <div class="form-actions">
+        <%= link_to "Modifier", profiles_path(@user), class:'btn btn-primary mt-4' %>
+      </div>
+    <% end %>
   </div>
 </div>
