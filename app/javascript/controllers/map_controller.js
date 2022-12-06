@@ -12,7 +12,7 @@ export default class extends Controller {
 
   static targets = ["instruction", "next-instruction"]
 
-  connect() {
+  async connect() {
     mapboxgl.accessToken = this.apiKeyValue
 
     this.map = new mapboxgl.Map({
@@ -20,10 +20,78 @@ export default class extends Controller {
       style: "mapbox://styles/mapbox/streets-v10"
     })
 
-    const bounds = new mapboxgl.LngLatBounds()
-    bounds.extend(this.boundsValue)
-    this.map.fitBounds(bounds, { padding: 70, maxZoom: 15, duration: 0 })
+    await this.#getUserPosition()
 
+    this.#addMarkersToMap()
+    this.#fitMapToMarkers()
+
+    this.#addSections()
+  }
+
+  #askBrowserForPosition() {
+    return new Promise(function(resolve, reject) {
+      navigator.geolocation.getCurrentPosition(resolve, reject)
+    })
+  }
+
+  async #getUserPosition() {
+    const input = document.querySelector("#itinerary_departure")
+    if (!input) return
+
+    this.userPosition = await this.#askBrowserForPosition()
+
+    this.#addOriginMarker()
+    this.#changeOriginInput()
+  }
+
+  async #changeOriginInput() {
+    const lat = this.userPosition.coords.latitude
+    const long = this.userPosition.coords.longitude
+    const geocodingUrl= `https://api.mapbox.com/geocoding/v5/mapbox.places/${long},${lat}.json?access_token=${this.apiKeyValue}`
+    const result = await fetch(geocodingUrl)
+    const json = await result.json()
+    const address = json.features[0].place_name
+
+    const input = document.querySelector("#champ .mapboxgl-ctrl-geocoder--input")
+    input.value = address
+
+    const input2 = document.querySelector("#itinerary_departure")
+    input2.value = address
+  }
+
+  #addOriginMarker() {
+    new mapboxgl.Marker()
+      .setLngLat([this.userPosition.coords.longitude, this.userPosition.coords.latitude])
+      .addTo(this.map)
+
+    this.#fitMapToMarkers(location)
+  }
+
+  #addMarkersToMap() {
+    if (!this.hasMarkerValue) return
+
+    this.markersValue.forEach((marker) => {
+      new mapboxgl.Marker()
+        .setLngLat([marker.lng, marker.lat])
+        .addTo(this.map)
+    })
+  }
+
+  #fitMapToMarkers() {
+    const bounds = new mapboxgl.LngLatBounds()
+
+    if (this.hasBoundsValue) {
+      bounds.extend(this.boundsValue)
+    }
+
+    if (this.userPosition) {
+      bounds.extend([this.userPosition.coords.longitude, this.userPosition.coords.latitude])
+    }
+
+    this.map.fitBounds(bounds, { padding: 70, maxZoom: 15, duration: 0 })
+  }
+
+  #addSections() {
     // Alors en gros tout le merdier qui suit c'est pour afficher un itinéraire sur la map
     // Pour ça faut :
     //  - récupérer la fameuse geometry de la route (donc chaque geometry de chaque section)
@@ -111,7 +179,7 @@ export default class extends Controller {
               'line-cap': 'round'
             },
             'paint': {
-              'line-color': colors[Math.floor(Math.random()*colors.length)], // Ça c'est juste un petit hack pour avoir une couleur random, mais faudra que la couleur dépende de la cyclabilité
+              'line-color': colors[Math.floor(Math.random() * colors.length)], // Ça c'est juste un petit hack pour avoir une couleur random, mais faudra que la couleur dépende de la cyclabilité
               'line-width': 8
             }
           });
@@ -125,5 +193,4 @@ export default class extends Controller {
     // OPTIONNEL MAIS COOL : Il faudrait aussi créer une layer par route qu'on pourrait afficher / cacher quand on choisit une route
     //                       mais je sais pas si c'est possible d'ajouter une layer à une layer. On peut se garder ça pour plus tard.
   }
-
 }
