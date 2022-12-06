@@ -1,4 +1,3 @@
-
 <div
     id="route-map"
     data-controller="route"
@@ -34,37 +33,71 @@
         <p><strong><%= (Time.now + @route.duration.fdiv(60).round.minutes).strftime("%Hh%M") %></strong></p>
       </div>
       <div class="cancel-travel item">
-        <%= image_tag 'cancel_travel.svg', width: '40', height: '40', :class => ""  %>
+        <%= link_to root_path do %>
+          <%= image_tag 'cancel_travel.svg', width: '40', height: '40' %>
+        <% end %>
       </div>
     </div>
   </div>
   <div class="warnings">
-    <%= link_to  "new_section_section_warning_path" do %>
+    <%= link_to "new_section_section_warning_path" do %>
       <%= image_tag "warning.svg", :class => "warning iconMapShadow" %>
     <% end %>
-    <div data-controller="warnings" data-action="click->warnings#addWarning" data-warnings-url-value="<%= section_section_warnings_path("quentin") %>" >
+    <div
+      data-controller="warnings"
+      data-action="click->warnings#addWarning"
+      data-warnings-url-value="<%= section_section_warnings_path("id") %>"
+      data-warnings-type-value="splash"
+      data-warnings-img-value="<%= image_path "pin_splash.png" %>">
       <%= image_tag "warning_splash.svg", :class => "warning_splash iconMapShadow" %>
     </div>
-    <%= link_to  "new_section_section_warning_path" do %>
+    <div
+      data-controller="warnings"
+      data-action="click->warnings#addWarning"
+      data-warnings-url-value="<%= section_section_warnings_path("id") %>"
+      data-warnings-type-value="obstacle"
+      data-warnings-img-value="<%= image_path "pin_obstacle.png" %>">
       <%= image_tag "warning_obstacle.svg", :class => "warning_obstacle iconMapShadow" %>
-    <% end %>
-    <%= link_to  "new_section_section_warning_path" do %>
+    </div>
+    <div
+      data-controller="warnings"
+      data-action="click->warnings#addWarning"
+      data-warnings-url-value="<%= section_section_warnings_path("id") %>"
+      data-warnings-type-value="doubleparking"
+      data-warnings-img-value="<%= image_path "pin_double_parking.png" %>">
       <%= image_tag "warning_double_parking.svg", :class => "warning_parking iconMapShadow" %>
-    <% end %>
-    <%= link_to  "new_section_section_warning_path" do %>
+    </div>
+    <div
+      data-controller="warnings"
+      data-action="click->warnings#addWarning"
+      data-warnings-url-value="<%= section_section_warnings_path("id") %>"
+      data-warnings-type-value="dog"
+      data-warnings-img-value="<%= image_path "pin_dog.png" %>">
       <%= image_tag "warning_dog.svg", :class => "warning_dog iconMapShadow" %>
-    <% end %>
+    </div>
   </div>
   <div class="cyclab">
-    <%= link_to  "new_section_section_warning_path" do %>
+    <div
+      data-controller="cyclab"
+      data-action="click->cyclab#addRate"
+      data-cyclab-url-value="<%=  rate_section_path("id") %>"
+      data-cyclab-type-value="bad">
       <%= image_tag "cyclab_BAD.svg", :class => "cyclab-bad iconMapShadow" %>
-    <% end %>
-    <%= link_to  "new_section_section_warning_path" do %>
+    </div>
+    <div
+      data-controller="cyclab"
+      data-action="click->cyclab#addRate"
+      data-cyclab-url-value="<%=  rate_section_path("id") %>"
+      data-cyclab-type-value="middle">
       <%= image_tag "cyclab_MIDDLE.svg", :class => "cyclab-middle iconMapShadow" %>
-    <% end %>
-    <%= link_to  "new_section_section_warning_path" do %>
+    </div>
+    <div
+      data-controller="cyclab"
+      data-action="click->cyclab#addRate"
+      data-cyclab-url-value="<%=  rate_section_path("id") %>"
+      data-cyclab-type-value="good">
       <%= image_tag "cyclab_GOOD.svg", :class => "cyclab-good iconMapShadow" %>
-    <% end %>
+    </div>
   </div>
   <div>
     <%= image_tag "nav.png", :class => "navigation-icon iconMapShadow" %>
@@ -75,4 +108,3 @@
     >
   </div>
 </div>
-

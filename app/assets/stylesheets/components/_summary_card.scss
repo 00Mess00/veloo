@@ -6,7 +6,7 @@
 
 .summary {
   display: flex !important;
-  justify-content: space-evenly;
+  justify-content: space-around;
   height: 55px;
   width: 100%;
   background-color: #FFFFFF;
@@ -18,8 +18,7 @@
 
 .summary .item {
   display: flex;
-  align-items: baseline;
-  margin-top: 15px;
+  align-items: center;
 }
 
 .item img {
@@ -29,4 +28,6 @@
 
 .summary p {
   opacity: 60%;
+  margin-top: 0;
+  margin-bottom: -4px;
 }

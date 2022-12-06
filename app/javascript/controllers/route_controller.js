@@ -95,7 +95,7 @@ export default class extends Controller {
 
         // Pour chaque section
         sectionCoordinates.forEach((sectionCoordinate) => {
-          const colors = ['#00FFFF', '#FF0000', '#FFFF00', '#000000']
+          const colors = ['#00FFFF', '#FF0000', '#FFFF00']
 
           // Je crée une source avec un nom unique
           this.map.addSource(`route-${sectionCoordinate.id}`, {
@@ -133,5 +133,19 @@ export default class extends Controller {
     // on peut y ajouter des events, de la data particulière (genre des couleurs) et des warnings (à base de markers)
     // OPTIONNEL MAIS COOL : Il faudrait aussi créer une layer par route qu'on pourrait afficher / cacher quand on choisit une route
     //                       mais je sais pas si c'est possible d'ajouter une layer à une layer. On peut se garder ça pour plus tard.
+  }
+
+  addSpecificMarkersToMap(lat, lng, img) {
+    // Create a HTML element for your custom marker
+    const customMarker = document.createElement("div")
+    customMarker.className = "marker"
+    customMarker.style.backgroundImage = `url('${img}')`
+    customMarker.style.backgroundSize = "contain"
+    customMarker.style.width = "53px"
+    customMarker.style.height = "64px"
+
+    new mapboxgl.Marker(customMarker)
+      .setLngLat([ lng, lat ])
+      .addTo(this.map)
   }
 }
