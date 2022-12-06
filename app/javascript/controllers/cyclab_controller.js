@@ -6,16 +6,15 @@ export default class extends Controller {
   static values = {
     url: String,
     type: String,
-    img: String
   }
 
   getPosition() {
-    return new Promise(function(resolve,reject) {
-      navigator.geolocation.getCurrentPosition(resolve,reject)
+    return new Promise(function(resolve, reject) {
+      navigator.geolocation.getCurrentPosition(resolve, reject)
     })
   }
 
-  async addWarning() {
+  async addRate() {
     const map = document.getElementById("route-map")
     const sections = map.controller.routesValue[0]
     let id = 0
@@ -43,15 +42,15 @@ export default class extends Controller {
       if (intervalLat.contains(navigatorPos.coords.latitude) && intervalLong.contains(navigatorPos.coords.longitude)) {
         // Si oui, on récupère l'id de la section et on arrete tout.
         id = section.id
+        console.log(id)
       }
     })
     fetch(this.urlValue.replace("id", id), {
-      method: "POST",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')},
-      body: JSON.stringify({"type": this.typeValue, "latitude": navigatorPos.coords.latitude, "longitude": navigatorPos.coords.longitude })
+      body: JSON.stringify({"type": this.typeValue })
     })
-    map.controller.addSpecificMarkersToMap(navigatorPos.coords.latitude, navigatorPos.coords.longitude, this.imgValue)
   }
 }
