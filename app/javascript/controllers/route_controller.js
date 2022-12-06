@@ -55,7 +55,7 @@ export default class extends Controller {
 
     // Donc pour chaque route
     this.routesValue.forEach((route) => {
-      //console.log(route)
+      console.log(route)
       this.instructionTarget.innerText = route[0].name
       this.nextInstructionTarget.innerText = route[1].name
       //this.instructionTargets.innerText;
