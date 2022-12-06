@@ -6,4 +6,7 @@ class RoutesController < ApplicationController
   def rate
   end
 
+  def arrival
+  end
+
 end
