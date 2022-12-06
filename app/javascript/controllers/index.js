@@ -15,3 +15,6 @@ application.register("map", MapController)
 
 import RouteController from "./route_controller"
 application.register("route", RouteController)
+
+import WarningsController from "./warnings_controller"
+application.register("warnings", WarningsController)
