@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_many :bookmarks
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+  validates :photo, presence: true
 
   SKILLS = ["Débutant", "intermédiaire", "Expert"]
 
