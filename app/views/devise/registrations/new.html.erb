@@ -1,12 +1,12 @@
 <div class="background">
   <div class="py-4 container text-center">
    <div class="logo_velo_yellow">
-    <%= image_tag "veloo_yellow.png" %>
+    <%= link_to root_path do %>
+      <%= image_tag "veloo_yellow.png" %>
+    <% end %>
    </div>
     <div class="title">
       <h1 class="my-3">Créer mon compte</h1>
-      <p class="p--tiny">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel placeat
-    quam cum excepturi aut aliquid tempora impedit cupiditate.</p>
     </div>
     <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), data: { turbo: :false }) do |f| %>
       <div class="form-inputs text-start">
