@@ -1,3 +1,7 @@
+.home_logo {
+  width: 160px;
+}
+
 .carousel {
   width:100vw;
   height:100vh;
@@ -8,7 +12,7 @@
 }
 
 .carousel-item {
-  padding:32px;
+  padding:32px 24px;
   text-align:center;
   position: relative;
 
@@ -37,10 +41,15 @@
 }
 
 .btn_home {
-  position: absolute;
-  bottom: 100px;
   width: 200px;
-  margin-left: auto;
-  margin-right: auto;
+  margin:16px auto;
   display: inline-block;
+}
+
+.btn_home_secondary {
+  position:absolute;
+  bottom:24px;
+  width: 100px;
+  bottom: 24px;
+  left: calc(50% - 50px);
 }
