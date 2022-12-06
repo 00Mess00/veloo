@@ -6,6 +6,7 @@ class ProfilesController < ApplicationController
   def update
     @user = current_user
     @user.update(user_params)
+    redirect_to new_itinerary_path
   end
 end
 
@@ -13,5 +14,5 @@ end
 private
 
 def user_params
-  params.require(:user).permit(:email, :skills, :bike_type, :average_speed, :visual_impairment)
+  params.require(:user).permit(:email, :skills, :bike_type,:photo, :average_speed, :visual_impairment)
 end

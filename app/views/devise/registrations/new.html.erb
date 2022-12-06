@@ -1,51 +1,53 @@
 <div class="background">
   <div class="py-4 container text-center">
    <div class="logo_velo_yellow">
-    <%= image_tag "veloo_yellow.png" %>
+    <%= link_to root_path do %>
+      <%= image_tag "veloo_yellow.png" %>
+    <% end %>
    </div>
     <div class="title">
       <h1 class="my-3">Créer mon compte</h1>
-      <p class="p--tiny">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel placeat
-    quam cum excepturi aut aliquid tempora impedit cupiditate.</p>
     </div>
-    <div>
-      <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), data: { turbo: :false }) do |f| %>
-        <div class="form-inputs text-start">
-          <div class="email">
-            <%= f.input :email,
-                        required: false,
-                        autofocus: true,
-                        input_html: { autocomplete: " Adresse email" } %>
-          </div>
-          <div class="password">
-            <%= f.input :password,
-                        required: false,
-                        input_html: { autocomplete: "Mot de passe" } %>
-          </div>
-          <div class="deficience">
-            <%= f.input :visual_impairment,
-                        collection: ["Aucune déficience","Daltonisme"],
-                        required: false
-                        %>
-          </div>
-            <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
+    <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), data: { turbo: :false }) do |f| %>
+      <div class="form-inputs text-start">
+        <div class="email">
+          <%= f.input :email,
+                      required: false,
+                      autofocus: true,
+                      input_html: { autocomplete: " Adresse email" } %>
+        </div>
+        <div class="password">
+          <%= f.input :password,label: "Mot de passe",
+                      required: false,
+                      input_html: { autocomplete: "Mot de passe" } %>
+        </div>
+        <div class="deficience">
+          <%= f.input :visual_impairment, label: "Déficience visuelle",
+                      collection: ["Aucune déficience","Daltonisme"],
+                      selected: 1,
+                      required: false
+                      %>
+        </div>
+        <div>
+          <%= f.input :photo, as: :file, label: "Photo" %>
         </div>
 
-        <div class="skills_chekbox">
-          <%= f.input :skills,
+        <div class="skills_chekbox text-start">
+          <%= f.input :skills,label: "Expérience",
             as: :radio_buttons,
             collection_wrapper_tag: 'div',
             collection_wrapper_class: 'category-wrapper',
             item_wrapper_class: 'category-item',
             input_html: {class: 'category-selector'},
             collection: User::SKILLS %>
-
         </div>
-      <div class="form-actions mb-4">
-        <%= f.button :submit, "Je créee mon compte", class:'btn btn-primary' %>
+
+        <%= f.input :remember_me, label: "Rester connecté", as: :boolean if devise_mapping.rememberable? %>
+      </div>
+      <div class="form-actions">
+        <%= f.button :submit, "Créer mon compte", class:'btn btn-primary mt-3' %>
       </div>
     <% end %>
-
     <%= render "devise/shared/links" %>
   </div>
 </div>

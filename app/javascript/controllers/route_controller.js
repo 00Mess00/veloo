@@ -13,6 +13,10 @@ export default class extends Controller {
   static targets = ["instruction", "nextInstruction"]
 
   connect() {
+    navigator.geolocation.getCurrentPosition = function(successCallback, errorCallback) {
+      successCallback({coords:{latitude:48.104358015568515, longitude:-1.6639229317600917}});
+    }
+    this.element.controller = this
     mapboxgl.accessToken = this.apiKeyValue
     const mapContainer = document.getElementById("map")
     this.map = new mapboxgl.Map({
@@ -91,7 +95,7 @@ export default class extends Controller {
 
         // Pour chaque section
         sectionCoordinates.forEach((sectionCoordinate) => {
-          const colors = ['#00FFFF', '#FF0000', '#FFFF00', '#000000']
+          const colors = ['#00FFFF', '#FF0000', '#FFFF00']
 
           // Je crée une source avec un nom unique
           this.map.addSource(`route-${sectionCoordinate.id}`, {
@@ -131,4 +135,17 @@ export default class extends Controller {
     //                       mais je sais pas si c'est possible d'ajouter une layer à une layer. On peut se garder ça pour plus tard.
   }
 
+  addSpecificMarkersToMap(lat, lng, img) {
+    // Create a HTML element for your custom marker
+    const customMarker = document.createElement("div")
+    customMarker.className = "marker"
+    customMarker.style.backgroundImage = `url('${img}')`
+    customMarker.style.backgroundSize = "contain"
+    customMarker.style.width = "53px"
+    customMarker.style.height = "64px"
+
+    new mapboxgl.Marker(customMarker)
+      .setLngLat([ lng, lat ])
+      .addTo(this.map)
+  }
 }

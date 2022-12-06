@@ -6,8 +6,6 @@ $gray: #0E0000;
 $light-gray: #F4F4F4;
 
 
-
-
 // Veloo variables:
 $yellow: #F9B54F;
 $red: #F3574A;
@@ -24,3 +22,7 @@ $black-100: #F1F1F1;
 $black-400: #BABABA;
 $black-800: #8B8B8B;
 $black-1000: #000000;
+
+.yellow-dark-color {
+  color: $yellow-dark;
+}
