@@ -58,7 +58,7 @@ class MapboxDirectionsApiService
               weight: step["weight"],
               geometry: step["geometry"],
               name: step["name"],
-              instruction: step["maneuver"]["instruction"],
+              instruction: step["maneuver"]["modifier"],
               from_lat: step["maneuver"]["location"].last,
               from_lng: step["maneuver"]["location"].first
            )

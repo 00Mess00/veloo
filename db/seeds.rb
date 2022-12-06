@@ -16,8 +16,14 @@ require 'open-uri'
 require 'json'
 
 puts "Cleaning up database..."
-Bookmark.destroy_all
+SectionWarning.destroy_all
+RouteSection.destroy_all
+Route.destroy_all
+Itinerary.destroy_all
 User.destroy_all
+Section.destroy_all
+Bookmark.destroy_all
+
 puts "Database cleaned"
 
 puts 'Creating 3 users...'
