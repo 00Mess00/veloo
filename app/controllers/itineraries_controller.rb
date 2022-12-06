@@ -7,7 +7,7 @@ class ItinerariesController < ApplicationController
     @itinerary = Itinerary.new(itinerary_params)
     @itinerary.user = current_user
 
-    if @itinerary.save
+    if @itinerary.save!
       @results = MapboxDirectionsApiService.new(itinerary: @itinerary).call
 
       redirect_to itinerary_path(@itinerary)

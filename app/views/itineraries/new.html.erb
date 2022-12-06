@@ -1,14 +1,21 @@
 <%= render "shared/navbar" %>
+<div style="width: 100%; height: 600px;"
+  data-controller="map"
+  data-map-markers-value="<%= @markers.to_json %>"
+  data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+
+</div>
+
 <div class="container">
   <%= simple_form_for @itinerary do |f| %>
-    <div class="itinerary-search-fields" data-controller="address-autocomplete" data-address-autocomplete-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+    <div class="itinerary-search-fields" id="champ" data-controller="address-autocomplete" data-address-autocomplete-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>" data-address-autocomplete-place-holder-value="D'où partons-nous?">
       <%= f.input :departure, input_html: { data: {address_autocomplete_target: "address"}, class: "d-none" } %>
     </div>
 
-    <div class="itinerary-search-fields new-itinerary-arrival" data-controller="address-autocomplete" data-address-autocomplete-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+    <div class="itinerary-search-fields new-itinerary-arrival" data-controller="address-autocomplete" data-address-autocomplete-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>" data-address-autocomplete-place-holder-value="Où allons-nous?">
       <%= f.input :arrival, input_html: { data: {address_autocomplete_target: "address"}, class: "d-none" } %>
     </div>
 
-    <%= f.submit "Chercher mon itinéraire", class:"w-100 mt-3 btn btn-primary" %>
+    <%= f.submit "Allons-y!", class:"w-100 mt-3 btn btn-primary" %>
   <% end %>
 </div>
