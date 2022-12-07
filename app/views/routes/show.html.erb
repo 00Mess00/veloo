@@ -1,13 +1,14 @@
 <div
     id="route-map"
     data-controller="route"
-    data-route-markers-value="<%= @markers.to_json %>"
+    data-route-position-value="<%= @position.to_json %>"
     data-route-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
-    data-route-routes-value="<%= [@route.sections].to_json %>"
+    data-route-route-value="<%= {geometry: @route.geometry, sections: @route.sections}.to_json %>"
     data-route-bounds-value="<%= @route.itinerary.bounds.to_json %>"
     data-route-left-value="<%= image_url "dir_turn_left_green.png" %>"
     data-route-right-value="<%= image_url "dir_turn_right_green.png" %>"
     data-route-straight-value="<%= image_url "dir_straight_green.png" %>">
+  <div data-route-target="map" class="map-route"></div>
   <div class="navigation">
     <div class="directions">
       <div class="d-flex">
@@ -107,10 +108,5 @@
   </div>
   <div>
     <%= image_tag "nav.png", :class => "navigation-icon iconMapShadow" %>
-  </div>
-  <div
-    class="map-route"
-    id="map"
-    >
   </div>
 </div>

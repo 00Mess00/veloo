@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_07_091421) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_07_112355) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -84,6 +84,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_07_091421) do
     t.float "distance"
     t.float "weight"
     t.bigint "itinerary_id", null: false
+    t.string "geometry"
     t.index ["itinerary_id"], name: "index_routes_on_itinerary_id"
   end
 
