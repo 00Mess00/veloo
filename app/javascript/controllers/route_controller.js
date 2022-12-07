@@ -15,7 +15,8 @@ export default class extends Controller {
     straight: String,
     url: String,
     type: String,
-    img: String
+    img: String,
+    warnings: Array
   }
 
   static targets = ["instruction", "nextInstruction", "distance", "image", "map"]
@@ -36,6 +37,7 @@ export default class extends Controller {
         turf.point([this.routeValue.sections[0].to_lng, this.routeValue.sections[0].to_lat])
       ),
     })
+    this.#addMarkersToMap()
     this.map.setPadding({top: 500})
 
     this.routeCoordinates = polyline.decode(this.routeValue.geometry).map((a) => { return a.reverse() })
@@ -223,6 +225,21 @@ export default class extends Controller {
 
       this.counter = this.counter + 1;
     }
+  }
+
+  #addMarkersToMap() {
+    this.warningsValue.forEach((warning) => {
+      const customMarker = document.createElement("div")
+      customMarker.className = "marker"
+      customMarker.style.backgroundImage = `url('${warning.image}')`
+      customMarker.style.backgroundSize = "cover"
+      customMarker.style.width = "40px"
+      customMarker.style.height = "40px"
+
+      new mapboxgl.Marker(customMarker)
+        .setLngLat([warning.lng, warning.lat])
+        .addTo(this.map)
+    })
   }
 
   addSpecificMarkersToMap(lat, lng, img) {

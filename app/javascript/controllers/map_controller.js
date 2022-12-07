@@ -7,7 +7,8 @@ export default class extends Controller {
     apiKey: String,
     routes: Array,
     bounds: Array,
-    markers: Array
+    markers: Array,
+    warnings: Array
   }
 
   static targets = ["instruction", "next-instruction"]
@@ -70,6 +71,20 @@ export default class extends Controller {
   #addMarkersToMap() {
     // if (!this.hasMarkerValue) return
 
+
+    this.warningsValue.forEach((warning) => {
+      const customMarker = document.createElement("div")
+      customMarker.className = "marker"
+      customMarker.style.backgroundImage = `url('${warning.image}')`
+      customMarker.style.backgroundSize = "cover"
+      customMarker.style.width = "40px"
+      customMarker.style.height = "40px"
+
+      new mapboxgl.Marker(customMarker)
+        .setLngLat([warning.lng, warning.lat])
+        .addTo(this.map)
+    })
+
     this.markersValue.forEach((marker) => {
       new mapboxgl.Marker()
         .setLngLat([marker.lng, marker.lat])
@@ -122,7 +137,6 @@ export default class extends Controller {
       })
 
       this.map.on('load', () => {
-
         sectionCoordinates.forEach((sectionCoordinate) => {
           this.map.addSource(`route-${sectionCoordinate.id}`, {
             'type': 'geojson',
