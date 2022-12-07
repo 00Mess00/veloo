@@ -15,7 +15,7 @@ export default class extends Controller {
     })
   }
 
-  async addWarning() {
+  async addWarning(e) {
     const map = document.getElementById("route-map")
     const sections = map.controller.routesValue[0]
     let id = 0

@@ -19,6 +19,9 @@
   height:100% !important;
   object-fit: cover;
 }
+.mapboxgl-ctrl-logo, .mapboxgl-ctrl-bottom-right {
+  display: none !important;
+}
 
 .itinerary-wrapper {
   position: fixed;
@@ -31,6 +34,18 @@
   width:100vw;
 }
 
+
+/* Animation */
+.anim-icon {
+  animation: gelatine 0.5s;
+}
+@keyframes gelatine {
+  from, to { transform: scale(1, 1); }
+  25% { transform: scale(0.9, 1.1); }
+  50% { transform: scale(1.1, 0.9); }
+  75% { transform: scale(0.95, 1.05); }
+}
 .mapboxgl-map {
   position: absolute !important;
+
 }
