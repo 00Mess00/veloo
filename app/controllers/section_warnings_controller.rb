@@ -11,5 +11,4 @@ class SectionWarningsController < ApplicationController
     new_warning.section = section
     new_warning.save
   end
-
 end

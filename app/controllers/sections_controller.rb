@@ -11,28 +11,30 @@ class SectionsController < ApplicationController
     if params[:type] == "good"
       if section.cyclability_nb.to_i.zero?
         section.cyclability_nb = 0
-        section.cyclability = 10
+        section.weight = 10
       else
-        section.cyclability = ((section.cyclability * section.cyclability_nb) + 10) / (section.cyclability_nb + 1)
+        section.weight = ((section.weight * section.cyclability_nb) + 25) / (section.cyclability_nb + 1)
       end
     end
     if params[:type] == "middle"
       if section.cyclability_nb.to_i.zero?
         section.cyclability_nb = 0
-        section.cyclability = 5
+        section.weight = 5
       else
-        section.cyclability = ((section.cyclability * section.cyclability_nb) + 5) / (section.cyclability_nb + 1)
+        section.weight = ((section.weight * section.cyclability_nb) + 75) / (section.cyclability_nb + 1)
       end
     end
     if params[:type] == "bad"
       if section.cyclability_nb.to_i.zero?
         section.cyclability_nb = 0
-        section.cyclability = 0
+        section.weight = 0
       else
-        section.cyclability = (section.cyclability * section.cyclability_nb) / (section.cyclability_nb + 1)
+        section.weight = ((section.weight * section.cyclability_nb) + 125) / (section.cyclability_nb + 1)
       end
     end
     section.cyclability_nb += 1
     section.save
+
+    render json: section.to_json
   end
 end

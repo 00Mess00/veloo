@@ -9,5 +9,4 @@ class RoutesController < ApplicationController
 
   def arrival
   end
-
 end

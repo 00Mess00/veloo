@@ -1,6 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 import polyline from "@mapbox/polyline"
 import { end } from "@popperjs/core"
+var Interval = require('math.interval')
 
 // Connects to data-controller="map"
 export default class extends Controller {
@@ -11,7 +12,10 @@ export default class extends Controller {
     position: Array,
     left: String,
     right: String,
-    straight: String
+    straight: String,
+    url: String,
+    type: String,
+    img: String
   }
 
   static targets = ["instruction", "nextInstruction", "distance", "image", "map"]
@@ -221,7 +225,6 @@ export default class extends Controller {
     }
   }
 
-
   addSpecificMarkersToMap(lat, lng, img) {
     // Create a HTML element for your custom marker
     const customMarker = document.createElement("div")
@@ -234,5 +237,97 @@ export default class extends Controller {
     new mapboxgl.Marker(customMarker)
       .setLngLat([ lng, lat ])
       .addTo(this.map)
+  }
+
+  async addRate(event) {
+    const map = document.getElementById("route-map")
+    const sections = this.routeValue.sections
+    let id = 0
+
+    // on récupère les coordonnées GPS de l'utilisateur
+    const navigatorPos = this.point.features[0].geometry.coordinates
+
+    // Pour chaque section
+    sections.forEach((section) => {
+      // On récupère sa géométrie
+      const geom = section.geometry
+      // On la décode (polyline.decode)
+      const geomDecod = polyline.decode(geom)
+
+      // On prend les extrémités de ces points
+      const minLat = Math.min(...geomDecod.map(coordinates => coordinates[0]))
+      const maxLat = Math.max(...geomDecod.map(coordinates => coordinates[0]))
+      const minLong = Math.min(...geomDecod.map(coordinates => coordinates[1]))
+      const maxLong = Math.max(...geomDecod.map(coordinates => coordinates[1]))
+
+      // On regarde si le point fait partie de la boite
+      let intervalLat = new Interval(`(${minLat}, ${maxLat})`)
+      let intervalLong = new Interval(`(${minLong}, ${maxLong})`)
+      if (intervalLat.contains(navigatorPos[1]) && intervalLong.contains(navigatorPos[0])) {
+        // Si oui, on récupère l'id de la section et on arrete tout.
+        id = section.id
+        const formData = new FormData()
+        formData.append("type", event.currentTarget.dataset.routeTypeValue)
+
+        fetch(`/sections/${id}/rate`, {
+          method: "PATCH",
+          headers: {
+            "Accept": "application/json",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')},
+          body: formData
+        }).then(response => response.json())
+        .then((data) => {
+          console.log(data)
+        })
+      }
+    })
+  }
+
+  async addWarning(event) {
+    const map = document.getElementById("route-map")
+    const sections = this.routeValue.sections
+    let id = 0
+
+    // on récupère les coordonnées GPS de l'utilisateur
+    // const navigatorPos = await this.getPosition()
+    const navigatorPos = this.point.features[0].geometry.coordinates
+
+    // Pour chaque section
+    sections.forEach((section) => {
+      // On récupère sa géométrie
+      const geom = section.geometry
+      // On la décode (polyline.decode)
+      const geomDecod = polyline.decode(geom)
+
+      // On prend les extrémités de ces points
+      const minLat = Math.min(...geomDecod.map(coordinates => coordinates[0]))
+      const maxLat = Math.max(...geomDecod.map(coordinates => coordinates[0]))
+      const minLong = Math.min(...geomDecod.map(coordinates => coordinates[1]))
+      const maxLong = Math.max(...geomDecod.map(coordinates => coordinates[1]))
+
+      // On regarde si le point fait partie de la boite
+      let intervalLat = new Interval(`(${minLat}, ${maxLat})`)
+      let intervalLong = new Interval(`(${minLong}, ${maxLong})`)
+
+      if (intervalLat.contains(navigatorPos[1]) && intervalLong.contains(navigatorPos[0])) {
+        // Si oui, on récupère l'id de la section et on arrete tout.
+        id = section.id
+        const formData = new FormData()
+        formData.append("type", event.currentTarget.dataset.routeTypeValue)
+        formData.append("latitude", navigatorPos[1])
+        formData.append("longitude", navigatorPos[0])
+
+        fetch(`/sections/${id}/section_warnings`, {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          },
+          body: formData
+        })
+
+        this.addSpecificMarkersToMap(navigatorPos[1], navigatorPos[0], event.currentTarget.dataset.routeImgValue)
+      }
+    })
   }
 }
