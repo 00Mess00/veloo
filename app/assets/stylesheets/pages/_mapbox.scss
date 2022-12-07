@@ -7,7 +7,7 @@
 }
 
 .mapboxgl-marker {
-  top:-20px !important;
+  // top: 0px !important;
   filter: drop-shadow(0px 20px 6px rgba(0, 0, 0, 0.25));
   animation: pinPoint 2s;
 }
