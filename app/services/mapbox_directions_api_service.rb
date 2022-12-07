@@ -43,6 +43,7 @@ class MapboxDirectionsApiService
         arrival_lng: arrival_coordinates.last,
         itinerary: @itinerary,
         weight: route_data["weight"],
+        geometry: route_data["geometry"],
         distance: route_data["distance"],    # distance en mètres
         duration: route_data["duration"]     # durée en secondes
       )

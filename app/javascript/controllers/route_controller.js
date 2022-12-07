@@ -6,148 +6,221 @@ import { end } from "@popperjs/core"
 export default class extends Controller {
   static values = {
     apiKey: String,
-    routes: Array,
+    route: Object,
     bounds: Array,
-    markers: Array,
+    position: Array,
     left: String,
     right: String,
     straight: String
   }
 
-  static targets = ["instruction", "nextInstruction", "distance", "image"]
+  static targets = ["instruction", "nextInstruction", "distance", "image", "map"]
 
   connect() {
-    navigator.geolocation.getCurrentPosition = function(successCallback, errorCallback) {
-      successCallback({coords:{latitude:48.104358015568515, longitude:-1.6639229317600917}});
-    }
-    this.element.controller = this
+    // navigator.geolocation.getCurrentPosition = function(successCallback, errorCallback) {
+    //   successCallback({coords:{latitude:48.104358015568515, longitude:-1.6639229317600917}});
+    // }
     mapboxgl.accessToken = this.apiKeyValue
-    const mapContainer = document.getElementById("map")
     this.map = new mapboxgl.Map({
-      container: mapContainer,
-      style: "mapbox://styles/mapbox/streets-v10"
+      container: this.mapTarget,
+      style: "mapbox://styles/mapbox/streets-v10",
+      center: [this.routeValue.sections[0].from_lng, this.routeValue.sections[0].from_lat],
+      zoom: 20,
+      pitch: 60,
+      bearing: turf.bearing(
+        turf.point([this.routeValue.sections[0].from_lng, this.routeValue.sections[0].from_lat]),
+        turf.point([this.routeValue.sections[0].to_lng, this.routeValue.sections[0].to_lat])
+      ),
     })
+    this.map.setPadding({top: 500})
 
-    const bounds = new mapboxgl.LngLatBounds()
-    bounds.extend(this.boundsValue)
-    this.map.fitBounds(bounds, { padding: 70, maxZoom: 15, duration: 0 })
+    this.routeCoordinates = polyline.decode(this.routeValue.geometry).map((a) => { return a.reverse() })
+    this.point = {
+      'type': 'FeatureCollection',
+      'features': [
+        {
+          'type': 'Feature',
+          'properties': {},
+          'geometry': {
+            'type': 'Point',
+            'coordinates': [this.routeValue.sections[0].from_lng, this.routeValue.sections[0].from_lat]
+          }
+        }
+      ]
+    };
+    this.counter = 0;
+    this.steps = 10000;
 
-    // Alors en gros tout le merdier qui suit c'est pour afficher un itinéraire sur la map
-    // Pour ça faut :
-    //  - récupérer la fameuse geometry de la route (donc chaque geometry de chaque section)
-    //  - pour chaque geometry, faut la transformer en points GPS (lat et lng)
-    //  - ajouter une source à la map : https://docs.mapbox.com/mapbox-gl-js/api/sources/
-    //  - ajouter une layer qui affiche la source : https://docs.mapbox.com/mapbox-gl-js/api/map/#map#addlayer
-    //    En gros la layer elle prend une source et l'affiche en surcouche de la map (d'où le nom de layer)
-    //    La layer elle prend un attribut 'line-color', qui va nous servir à afficher la cyclabilité de la section en question
+    const line = turf.lineString(this.routeCoordinates);
+    const lineDistance = turf.length(line);
+    this.arc = [];
+    for (let i = 0; i < lineDistance; i += lineDistance / this.steps) {
+      const segment = turf.along(line, i);
+      this.arc.push(segment.geometry.coordinates);
+    }
 
-    // Donc, étape par étape :
+    // const bounds = new mapboxgl.LngLatBounds()
+    // bounds.extend(this.boundsValue)
+    // this.map.fitBounds(bounds, { padding: 70, maxZoom: 15, duration: 0 })
+
     let sectionCoordinates = []
 
-    // Chaque route est passée dans l'array this.routesValue (voir app/views/itineraries/show.html.erb:12)
-    // plus ou moins ce format là : un array général, un sous array par route, un hash par section dans chaque route
-    // [
-    //   [
-    //     {id: 1, name: "Rue de Léon", geometry: "àzda0ddzé&&àsm", ...}
-    //     {id: 2, name: "Rue Dupont des Loges", geometry: "_zddz$%s_m", ...}
-    //   ],
-    //   [
-    //     {id: 3, name: "Rue de Tonton", geometry: "àzda0ddzé&&àsm", ...}
-    //     {id: 4, name: "Rue Dupont des Chouettes", geometry: "_zddz$%s_m", ...}
-    //   ]
-    // ]
+    this.instructionTarget.innerText = this.routeValue.sections[0].name
+    this.nextInstructionTarget.innerText = this.routeValue.sections[1].name
+    this.distanceTarget.innerText = this.routeValue.sections[0].distance
 
-    // Donc pour chaque route
-    this.routesValue.forEach((route) => {
+    if (this.routeValue.sections[0].instruction == "sharp right" || this.routeValue.sections[0].instruction == "right" || this.routeValue.sections[0].instruction == "slight right" ) {
+      this.imageTarget.src = this.rightValue
+    }
+    if (this.routeValue.sections[0].instruction == "straight" || this.routeValue.sections[0].instruction === null) {
+      console.log(this.straightValue)
+      this.imageTarget.src = this.straightValue
+    }
+    if (this.routeValue.sections[0].instruction == "sharp left" || this.routeValue.sections[0].instruction == "left" || this.routeValue.sections[0].instruction == "slight left" ) {
+      this.imageTarget.src = this.leftValue
+    }
 
-      console.log(route)
-      this.instructionTarget.innerText = route[0].name
-      this.nextInstructionTarget.innerText = route[1].name
-      this.distanceTarget.innerText = route[0].distance
+    // Pour chaque section de la route
+    this.routeValue.sections.forEach((section) => {
+      // Je transforme la polyline en Array de coordonnées avec un module mapbox
+      let coordinatesFromPolyline = polyline.decode(section.geometry).map((a) => { return a.reverse() })
 
-      if (route[0].instruction == "sharp right" || route[0].instruction == "right" || route[0].instruction == "slight right" ) {
-        this.imageTarget.src = this.rightValue
-      }
-      if (route[0].instruction == "straight" || route[0].instruction === null) {
-        console.log(this.straightValue)
-        this.imageTarget.src = this.straightValue
-      }
-      if (route[0].instruction == "sharp left" || route[0].instruction == "left" || route[0].instruction == "slight left" ) {
-        this.imageTarget.src = this.leftValue
+      const colors = {
+        yellow: '#F9B54F',
+        red: '#F3574A',
+        green: '#5ABFAD'
       }
 
-      // Pour chaque section de la route
-      route.forEach((section) => {
-        // Je transforme la polyline en Array de coordonnées avec un module mapbox
-        let coordinatesFromPolyline = polyline.decode(section.geometry).map((a) => { return a.reverse() })
+      let color
+      if (section.weight >= 100) {
+        color = colors.red
+      } else if (section.weight >= 50) {
+        color = colors.yellow
+      } else {
+        color = colors.green
+      }
 
-        // Dans l'array je push un objet qui contient
-        // un ID unique pour la section (nécéssaire pour plus bas) et les coordonnées
-        sectionCoordinates.push({ id: Math.random().toString(16).slice(2), coordinates: coordinatesFromPolyline })
-      })
-
-      // À ce niveau là, sectionCoordinates contient un Array d'objets
-      // En gros vous verrez que ça ressemble à ça :
-      // [
-      //   {
-      //     id: 2090293029,
-      //     coordinates : [
-      //       [ -1.67031, 48.10848 ]
-      //       [ -1.67095, 48.10867 ]
-      //       [ -1.67105, 48.1087 ]
-      //       ...
-      //     ]
-      //   },
-      //   ...
-      // ]
-      // Où le gros Array principal contient un objet pour chaque section
-      // objet qui contient une clé id et une clé coordinates avec chaque point GPS de la section
-
-
-      // Au chargement de la map
-      this.map.on('load', () => {
-
-        // Pour chaque section
-        sectionCoordinates.forEach((sectionCoordinate) => {
-          const colors = ['#00FFFF', '#FF0000', '#FFFF00']
-
-          // Je crée une source avec un nom unique
-          this.map.addSource(`route-${sectionCoordinate.id}`, {
-            'type': 'geojson',
-            'data': {
-              'type': 'Feature',
-              'properties': {},
-              'geometry': {
-                'type': 'LineString',
-                'coordinates': sectionCoordinate.coordinates         // Source qui contient les coordonnées de la section
-              }
-            }
-          });
-
-          // J'ajoute une layer à la map avec la source créée plus haut
-          this.map.addLayer({
-            'id': `route-${sectionCoordinate.id}`,
-            'type': 'line',
-            'source': `route-${sectionCoordinate.id}`,           // source que j'ai créée juste au dessus
-            'layout': {
-              'line-join': 'round',
-              'line-cap': 'round'
-            },
-            'paint': {
-              'line-color': colors[Math.floor(Math.random()*colors.length)], // Ça c'est juste un petit hack pour avoir une couleur random, mais faudra que la couleur dépende de la cyclabilité
-              'line-width': 8
-            }
-          });
-        })
+      sectionCoordinates.push({
+        id: Math.random().toString(16).slice(2),
+        coordinates: coordinatesFromPolyline,
+        color: color
       })
     })
 
-    // La grande question après avoir démelé tout ça c'est : pourquoi se faire chier à ce point ?
-    // Mon instinct sur la question c'est que vu qu'on a une source et une layer pour chaque section
-    // on peut y ajouter des events, de la data particulière (genre des couleurs) et des warnings (à base de markers)
-    // OPTIONNEL MAIS COOL : Il faudrait aussi créer une layer par route qu'on pourrait afficher / cacher quand on choisit une route
-    //                       mais je sais pas si c'est possible d'ajouter une layer à une layer. On peut se garder ça pour plus tard.
+    this.map.on('load', () => {
+      sectionCoordinates.forEach((sectionCoordinate) => {
+        this.map.addSource(`route-${sectionCoordinate.id}`, {
+          'type': 'geojson',
+          'data': {
+            'type': 'Feature',
+            'properties': {},
+            'geometry': {
+              'type': 'LineString',
+              'coordinates': sectionCoordinate.coordinates         // Source qui contient les coordonnées de la section
+            }
+          }
+        });
+
+        this.map.addLayer({
+          'id': `route-${sectionCoordinate.id}`,
+          'type': 'line',
+          'source': `route-${sectionCoordinate.id}`,           // source que j'ai créée juste au dessus
+          'layout': {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          'paint': {
+            'line-color': sectionCoordinate.color,
+            'line-width': 8
+          }
+        });
+      })
+      this.map.loadImage(
+        'https://docs.mapbox.com/mapbox-gl-js/assets/cat.png',
+        (error, image) => {
+          if (error) throw error;
+
+          // Add the image to the map style.
+          this.map.addImage('cat', image);
+
+          this.map.addSource('point', {
+            'type': 'geojson',
+            'data': this.point
+          });
+
+          this.map.addLayer({
+            'id': 'point',
+            'source': 'point',
+            'type': 'symbol',
+            'layout': {
+              'icon-image': '',
+              'icon-size': 0.1,
+              'icon-rotate': ['get', 'bearing'],
+              'icon-rotation-alignment': 'map',
+              'icon-allow-overlap': true,
+              'icon-ignore-placement': true
+            }
+          });
+          animate(this.counter);
+        }
+      )
+    })
+
+    const animate = () => {
+      const start =
+        this.arc[
+          this.counter >= this.steps ? this.counter - 1 : this.counter
+        ];
+      const end =
+        this.arc[
+          this.counter >= this.steps ? this.counter : this.counter + 1
+        ];
+      if (!start || !end) return;
+
+      // Update point geometry to a new position based on this.counter denoting
+      // the index to access the arc
+      this.point.features[0].geometry.coordinates =
+        this.arc[this.counter];
+
+      // Calculate the bearing to ensure the icon is rotated to match the route arc
+      // The bearing is calculated between the current this.point and the next this.point, except
+      // at the end of the arc, which uses the previous this.point and the current this.point
+      this.point.features[0].properties.bearing = turf.bearing(
+        turf.point(start),
+        turf.point(end)
+      );
+      // this.map.setBearing(turf.bearing(
+      //   turf.point(start),
+      //   turf.point(end)
+      // ))
+      let turfBearing = turf.bearing(
+        turf.point(start),
+        turf.point(end)
+      )
+
+      this.map.setCenter(this.point.features[0].geometry.coordinates)
+      this.map.easeTo({
+        bearing: turfBearing,
+        duration: 100,
+        easing(t) {
+          return t;
+        }
+      });
+
+      // Update the source with this new data
+      this.map.getSource('point').setData(this.point);
+
+      // Request the next frame of animation as long as the end has not been reached
+      if (this.counter < this.steps) {
+        // setTimeout(() =>{
+        // }, 2000)
+        requestAnimationFrame(animate);
+      }
+
+      this.counter = this.counter + 1;
+    }
   }
+
 
   addSpecificMarkersToMap(lat, lng, img) {
     // Create a HTML element for your custom marker
