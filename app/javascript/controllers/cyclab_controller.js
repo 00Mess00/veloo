@@ -5,7 +5,7 @@ var Interval = require('math.interval')
 export default class extends Controller {
   static values = {
     url: String,
-    type: String,
+    type: String
   }
 
   getPosition() {

@@ -4,12 +4,15 @@
 
 .map {
   bottom: 0;
-  width: 100%;
-  height: 100vh;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 80vh;
+  max-height: 80vh;
   position: absolute;
   top: 0px;
   object-fit: cover;
-  display:none;
+  // display: none;
+  visibility: hidden;
 }
 
 .mapboxgl-canvas {
@@ -31,6 +34,7 @@
   width:100vw;
 }
 
+
 /* Animation */
 .anim-icon {
   animation: gelatine 0.5s;
@@ -40,4 +44,8 @@
   25% { transform: scale(0.9, 1.1); }
   50% { transform: scale(1.1, 0.9); }
   75% { transform: scale(0.95, 1.05); }
+}
+.mapboxgl-map {
+  position: absolute !important;
+
 }

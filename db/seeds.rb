@@ -20,9 +20,11 @@ SectionWarning.destroy_all
 RouteSection.destroy_all
 Route.destroy_all
 Itinerary.destroy_all
+Bookmark.destroy_all
 User.destroy_all
 Section.destroy_all
-Bookmark.destroy_all
+
+
 
 puts "Database cleaned"
 

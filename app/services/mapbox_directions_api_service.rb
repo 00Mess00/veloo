@@ -43,6 +43,7 @@ class MapboxDirectionsApiService
         arrival_lng: arrival_coordinates.last,
         itinerary: @itinerary,
         weight: route_data["weight"],
+        geometry: route_data["geometry"],
         distance: route_data["distance"],    # distance en mètres
         duration: route_data["duration"]     # durée en secondes
       )
@@ -60,7 +61,8 @@ class MapboxDirectionsApiService
               name: step["name"],
               instruction: step["maneuver"]["modifier"],
               from_lat: step["maneuver"]["location"].last,
-              from_lng: step["maneuver"]["location"].first
+              from_lng: step["maneuver"]["location"].first,
+              distance: step["distance"]
            )
 
             # Si il n'y a pas de step suivante
