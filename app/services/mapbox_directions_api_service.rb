@@ -60,7 +60,8 @@ class MapboxDirectionsApiService
               name: step["name"],
               instruction: step["maneuver"]["modifier"],
               from_lat: step["maneuver"]["location"].last,
-              from_lng: step["maneuver"]["location"].first
+              from_lng: step["maneuver"]["location"].first,
+              distance: step["distance"]
            )
 
             # Si il n'y a pas de step suivante
