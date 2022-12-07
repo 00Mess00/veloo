@@ -16,6 +16,9 @@
   height:100% !important;
   object-fit: cover;
 }
+.mapboxgl-ctrl-logo, .mapboxgl-ctrl-bottom-right {
+  display: none !important;
+}
 
 .itinerary-wrapper {
   position: fixed;
