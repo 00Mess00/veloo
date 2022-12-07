@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import polyline from "@mapbox/polyline"
+import { end } from "@popperjs/core"
 
 // Connects to data-controller="map"
 export default class extends Controller {
@@ -58,7 +59,21 @@ export default class extends Controller {
       console.log(route)
       this.instructionTarget.innerText = route[0].name
       this.nextInstructionTarget.innerText = route[1].name
-      //this.instructionTargets.innerText;
+
+
+      if (route[0].instruction == "uturn") {
+        this.direction.innerHTML = ""
+      }
+
+      if (route[0].instruction == "sharp right" || "right" || "slight right" ) {
+        this.direction.innerHTML = ""
+      }
+      if (route[0].instruction == "straight" ) {
+        this.direction.innerHTML = ""
+      }
+      if (route[0].instruction == "sharp left" || "left" || "slight left" ) {
+        this.direction.innerHTML = ""
+      }
 
       // Pour chaque section de la route
       route.forEach((section) => {
