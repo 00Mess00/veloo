@@ -28,9 +28,12 @@
       </div>
       <div class="itineraries">
         <% @itinerary.routes.each_with_index do |route, index| %>
+
         <div class="itinerary-card mt-3">
           <div class="itinerary-head">
-            <p class = "label m-0">le plus court</p>
+            <p class = "label m-0">
+              le plus court
+            </p>
             <%= link_to "Démarrer ce trajet", route_path(route) %>
           </div>
           <div id=<%= index %> class="itinerary" data-action="click->hello#displayItinerary">

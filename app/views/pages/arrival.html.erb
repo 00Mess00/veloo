@@ -1,32 +1,33 @@
 <div class="navigation">
-    <div class="directions arrival">
-      <div class="d-flex">
-        <div class="arrows">
-          <%= image_tag 'dir_half_turn_green.png' %>
-          <h2>200 m</h2>
+    <div class="directions-arrival">
+      <div class="d-flex justify-content-center w-100">
+        <div class="flag">
+          <%= image_tag 'arrival.png' %>
         </div>
         <div class="instructions">
-          <h2 data-route-target="instruction">Avenue Janvier</h2>
-          <h3>puis <span data-route-target="nextInstruction">Place de Bretagne</span></h3>
+          <h2>Vous êtes arrivé !</h2>
         </div>
       </div>
       <div class="line-direction"></div>
     </div>
-    <div class="summary">
-      <div class="clock item">
-        <%= image_tag 'bottom_clock.svg', width: '20', height: '40', :class => ""  %>
-        <%# <p><strong><%= @route.duration.fdiv(60).round %></strong> min</p> %>
-      </div>
-      <div class="distance item">
-        <%= image_tag 'bottom_distance.svg', width: '20', height: '40', :class => ""  %>
-        <%# <p><strong><%= @route.distance.fdiv(1000).round(2) %></strong> km</p> %>
-      </div>
-      <div class="arrival item">
-        <%= image_tag 'bottom_flag.svg', width: '20', height: '40', :class => ""  %>
-        <%# <p><strong><%= (Time.now + @route.duration.fdiv(60).round.minutes).strftime("%Hh%M") %></strong></p> %>
-      </div>
-      <div class="cancel-travel item">
-        <%= image_tag 'cancel_travel.svg', width: '40', height: '40', :class => ""  %>
+    <div class="summary-arrival">
+      <h2>Notez la cyclabilité globale de ce trajet</h2>
+      <div class="summary-cyclability">
+        <div class="cyclability item">
+          <%= image_tag 'cyclab_GOOD.svg', width: '20', height: '40', :class => ""  %>
+          <%# <p><strong><%= @route.duration.fdiv(60).round %>
+          <%# </strong></p> %>
+        </div>
+        <div class="distance item">
+          <%= image_tag 'cyclab_MIDDLE.svg', width: '20', height: '40', :class => ""  %>
+          <%# <p><strong><%= @route.distance.fdiv(1000).round(2) %>
+          <%# </strong></p> %>
+        </div>
+        <div class="arrival item">
+          <%= image_tag 'cyclab_BAD.svg', width: '20', height: '40', :class => ""  %>
+          <%# <p><strong><%= (Time.now + @route.duration.fdiv(60).round.minutes).strftime("%Hh%M") %>
+          <%# </strong></p> %>
+        </div>
       </div>
     </div>
   </div>

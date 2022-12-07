@@ -55,7 +55,16 @@
 }
 
 .navigation {
+  z-index: 2;
   display: flex;
+}
+
+.warnings {
+  z-index: 2;
+}
+
+.cyclab {
+  z-index: 2;
 }
 
 .summary {
