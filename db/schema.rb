@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_06_153026) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_07_091421) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -110,6 +110,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_06_153026) do
     t.float "weight"
     t.string "instruction"
     t.integer "cyclability_nb"
+    t.integer "distance"
   end
 
   create_table "users", force: :cascade do |t|

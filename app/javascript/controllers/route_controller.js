@@ -8,10 +8,13 @@ export default class extends Controller {
     apiKey: String,
     routes: Array,
     bounds: Array,
-    markers: Array
+    markers: Array,
+    left: String,
+    right: String,
+    straight: String
   }
 
-  static targets = ["instruction", "nextInstruction"]
+  static targets = ["instruction", "nextInstruction", "distance", "image"]
 
   connect() {
     navigator.geolocation.getCurrentPosition = function(successCallback, errorCallback) {
@@ -56,23 +59,21 @@ export default class extends Controller {
 
     // Donc pour chaque route
     this.routesValue.forEach((route) => {
+
       console.log(route)
       this.instructionTarget.innerText = route[0].name
       this.nextInstructionTarget.innerText = route[1].name
+      this.distanceTarget.innerText = route[0].distance
 
-
-      if (route[0].instruction == "uturn") {
-        this.direction.innerHTML = ""
+      if (route[0].instruction == "sharp right" || route[0].instruction == "right" || route[0].instruction == "slight right" ) {
+        this.imageTarget.src = this.rightValue
       }
-
-      if (route[0].instruction == "sharp right" || "right" || "slight right" ) {
-        this.direction.innerHTML = ""
+      if (route[0].instruction == "straight" || route[0].instruction === null) {
+        console.log(this.straightValue)
+        this.imageTarget.src = this.straightValue
       }
-      if (route[0].instruction == "straight" ) {
-        this.direction.innerHTML = ""
-      }
-      if (route[0].instruction == "sharp left" || "left" || "slight left" ) {
-        this.direction.innerHTML = ""
+      if (route[0].instruction == "sharp left" || route[0].instruction == "left" || route[0].instruction == "slight left" ) {
+        this.imageTarget.src = this.leftValue
       }
 
       // Pour chaque section de la route
@@ -84,8 +85,6 @@ export default class extends Controller {
         // un ID unique pour la section (nécéssaire pour plus bas) et les coordonnées
         sectionCoordinates.push({ id: Math.random().toString(16).slice(2), coordinates: coordinatesFromPolyline })
       })
-
-      // console.log(sectionCoordinates)
 
       // À ce niveau là, sectionCoordinates contient un Array d'objets
       // En gros vous verrez que ça ressemble à ça :
