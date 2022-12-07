@@ -4,11 +4,11 @@ export default class extends Controller {
   static targets = ["maps", "map"]
 
   connect() {
-    this.mapsTarget.querySelector(`[id='0']`).style.display = "block";
+    this.mapsTarget.querySelector(`[id='0']`).style.visibility = "visible";
   }
   displayItinerary(e) {
-    this.mapTargets.forEach(map => map.style.display="none");
+    this.mapTargets.forEach(map => map.style.visibility="hidden");
     const mapItinerary = this.mapsTarget.querySelector(`[id='${e.currentTarget.id}']`);
-    mapItinerary.style.display = "block"
+    mapItinerary.style.visibility = "visible"
   }
 }

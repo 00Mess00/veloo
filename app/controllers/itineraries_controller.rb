@@ -18,6 +18,18 @@ class ItinerariesController < ApplicationController
 
   def show
     @itinerary = Itinerary.find(params[:id])
+    @markers = @itinerary.routes.map do |route|
+      [
+        {
+          lat: route.departure_lat,
+          lng: route.departure_lng
+        },
+        {
+          lat: route.arrival_lat,
+          lng: route.arrival_lng
+        }
+      ]
+    end.flatten
   end
 
   def rate
