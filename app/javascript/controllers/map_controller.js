@@ -70,11 +70,9 @@ export default class extends Controller {
 
   #addMarkersToMap() {
     // if (!this.hasMarkerValue) return
-
-
     this.warningsValue.forEach((warning) => {
       const customMarker = document.createElement("div")
-      customMarker.className = "marker"
+      customMarker.className = "marker marker-custom"
       customMarker.style.backgroundImage = `url('${warning.image}')`
       customMarker.style.backgroundSize = "cover"
       customMarker.style.width = "40px"
@@ -86,7 +84,14 @@ export default class extends Controller {
     })
 
     this.markersValue.forEach((marker) => {
-      new mapboxgl.Marker()
+      const customMarker = document.createElement("div")
+      customMarker.className = "marker marker-custom"
+      customMarker.style.backgroundImage = `url('${marker.image}')`
+      customMarker.style.backgroundSize = "cover"
+      customMarker.style.height = "25px"
+      customMarker.style.width = "25px"
+
+      new mapboxgl.Marker(customMarker)
         .setLngLat([marker.lng, marker.lat])
         .addTo(this.map)
     })

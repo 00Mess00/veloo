@@ -22,11 +22,13 @@ class ItinerariesController < ApplicationController
       [
         {
           lat: route.departure_lat,
-          lng: route.departure_lng
+          lng: route.departure_lng,
+          image: ActionController::Base.helpers.image_url('routes_start.png')
         },
         {
           lat: route.arrival_lat,
-          lng: route.arrival_lng
+          lng: route.arrival_lng,
+          image: ActionController::Base.helpers.image_url('routes_arrival.png')
         }
       ]
     end.flatten
