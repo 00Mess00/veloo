@@ -48,31 +48,29 @@
     </div>
   </div>
   <div class="warnings">
-    <%= link_to "new_section_section_warning_path" do %>
-      <%= image_tag "warning.svg", :class => "warning iconMapShadow" %>
-    <% end %>
+    <%= image_tag "warning.svg", :class => "warning iconMapShadow" %>
     <div
       data-action="click->route#addWarning"
       data-route-type-value="splash"
-      data-route-img-value="<%= image_path "pin_splash.png" %>">
+      data-route-img-value="<%= image_path "pin_splash.svg" %>">
       <%= image_tag "warning_splash.svg", :class => "warning_splash iconMapShadow" %>
     </div>
     <div
       data-action="click->route#addWarning"
       data-route-type-value="obstacle"
-      data-route-img-value="<%= image_path "pin_obstacle.png" %>">
+      data-route-img-value="<%= image_path "pin_obstacle.svg" %>">
       <%= image_tag "warning_obstacle.svg", :class => "warning_obstacle iconMapShadow" %>
     </div>
     <div
       data-action="click->route#addWarning"
       data-route-type-value="doubleparking"
-      data-route-img-value="<%= image_path "pin_double_parking.png" %>">
+      data-route-img-value="<%= image_path "pin_double_parking.svg" %>">
       <%= image_tag "warning_double_parking.svg", :class => "warning_parking iconMapShadow" %>
     </div>
     <div
       data-action="click->route#addWarning"
       data-route-type-value="dog"
-      data-route-img-value="<%= image_path "pin_dog.png" %>">
+      data-route-img-value="<%= image_path "pin_dog.svg" %>">
       <%= image_tag "warning_dog.svg", :class => "warning_dog iconMapShadow" %>
     </div>
   </div>
