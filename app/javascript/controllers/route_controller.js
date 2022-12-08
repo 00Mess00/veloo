@@ -224,11 +224,11 @@ export default class extends Controller {
 
   addSpecificMarkersToMap(lat, lng, img) {
     const customMarker = document.createElement("div")
-    customMarker.className = "marker"
+    customMarker.className = `new-marker`
     customMarker.style.backgroundImage = `url('${img}')`
     customMarker.style.backgroundSize = "contain"
-    customMarker.style.width = "53px"
-    customMarker.style.height = "64px"
+    customMarker.style.width = `37px`
+    customMarker.style.height = `48px`
 
     new mapboxgl.Marker(customMarker)
       .setLngLat([ lng, lat ])
@@ -290,9 +290,6 @@ export default class extends Controller {
     const map = document.getElementById("route-map")
     const sections = this.routeValue.sections
     let id = 0
-
-    // on récupère les coordonnées GPS de l'utilisateur
-    // const navigatorPos = await this.getPosition()
     const navigatorPos = this.point.features[0].geometry.coordinates
 
     sections.forEach((section) => {

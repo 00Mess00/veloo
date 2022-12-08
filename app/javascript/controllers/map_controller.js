@@ -8,7 +8,8 @@ export default class extends Controller {
     routes: Array,
     bounds: Array,
     markers: Array,
-    warnings: Array
+    warnings: Array,
+    departure: String
   }
 
   static targets = ["instruction", "next-instruction"]
@@ -61,7 +62,14 @@ export default class extends Controller {
   }
 
   #addOriginMarker() {
-    new mapboxgl.Marker()
+    const customMarker = document.createElement("div")
+    customMarker.className = "marker marker-custom"
+    customMarker.style.backgroundImage = `url('${this.departureValue}')`
+    customMarker.style.backgroundSize = "cover"
+    customMarker.style.width = "28px"
+    customMarker.style.height = "36px"
+
+    new mapboxgl.Marker(customMarker)
       .setLngLat([this.userPosition.coords.longitude, this.userPosition.coords.latitude])
       .addTo(this.map)
 
@@ -88,8 +96,8 @@ export default class extends Controller {
       customMarker.className = "marker marker-custom"
       customMarker.style.backgroundImage = `url('${marker.image}')`
       customMarker.style.backgroundSize = "cover"
-      customMarker.style.height = "25px"
-      customMarker.style.width = "25px"
+      customMarker.style.height = "36px"
+      customMarker.style.width = "28px"
 
       new mapboxgl.Marker(customMarker)
         .setLngLat([marker.lng, marker.lat])
