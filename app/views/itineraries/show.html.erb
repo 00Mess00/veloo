@@ -34,14 +34,6 @@
           </div>
           <div class="col">
             <div class="itinerary-head">
-            <p class = "label m-0">
-              Le plus
-              <% if index == 0 %>
-                court
-              <% else %>
-                sécurisé
-              <% end %>
-            </p>
             <%= link_to "Démarrer ce trajet", route_path(route), class:"btn-secondary" %>
             </div>
             <div id=<%= index %> class="itinerary" data-action="click->hello#displayItinerary">
@@ -54,22 +46,21 @@
                 <strong><%= route.duration.fdiv(60).round %></strong> min
               </span>
               <span>
-                <%= image_tag 'cyclist_1_active.png', class:"logocyclability" %>
                 <% case route.weight.fdiv(1).round %>
-                <% when 0..300 %>
-                  <strong>0/5</strong>
-                <% when 301..400 %>
-                  <strong>1/5</strong>
-                <% when 401..600 %>
-                  <strong>2/5</strong>
-                <% when 601..900 %>
-                  <strong>3/5</strong>
-                <% when 901..1000 %>
-                  <strong>4/5</strong>
+                <% when 0..200 %>
+                  <%= image_tag 'mini_veloo_blue.svg', class:"logocyclability" %>
+                <% when 201..460 %>
+                  <%= image_tag 'mini_veloo_blue.svg', class:"logocyclability" %>
+                <% when 461..600 %>
+                  <%= image_tag 'mini_veloo_yellow.svg', class:"logocyclability" %>
+                <% when 601..700 %>
+                  <%= image_tag 'mini_veloo_yellow.svg', class:"logocyclability" %>
+                <% when 701..1000 %>
+                  <%= image_tag 'mini_veloo_red.svg', class:"logocyclability" %>
                 <% else %>
-                  <strong>5/5</strong>
+                  <%= image_tag 'mini_veloo_red.svg', class:"logocyclability" %>
                 <% end %>
-                <%#= route.weight.fdiv(1).round %></div>
+                <%# <%= route.weight.fdiv(1).round %></div>
               </span>
             </div>
           </div>
