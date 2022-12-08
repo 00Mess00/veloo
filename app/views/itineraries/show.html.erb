@@ -49,13 +49,13 @@
                 <span>
                   <% case route.weight.fdiv(1).round %>
                   <% when 0..200 %>
-                    <%= image_tag 'mini_veloo_green.svg', class:"logocyclability"%>
-                  <% when 201..460 %>
+                    <%= image_tag 'mini_veloo_yellow.svg', class:"logocyclability"%>
+                  <% when 201..400 %>
+                    <%= image_tag 'mini_veloo_yellow.svg', class:"logocyclability" %>
+                  <% when 401..600 %>
                     <%= image_tag 'mini_veloo_green.svg', class:"logocyclability" %>
-                  <% when 461..600 %>
-                    <%= image_tag 'mini_veloo_yellow.svg', class:"logocyclability" %>
                   <% when 601..700 %>
-                    <%= image_tag 'mini_veloo_yellow.svg', class:"logocyclability" %>
+                    <%= image_tag 'mini_veloo_green.svg', class:"logocyclability" %>
                   <% when 701..1000 %>
                     <%= image_tag 'mini_veloo_red.svg', class:"logocyclability" %>
                   <% else %>
