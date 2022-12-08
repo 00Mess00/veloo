@@ -3,7 +3,7 @@
   <div class="maps" data-hello-target="maps">
     <% @itinerary.routes.each_with_index do |route, index| %>
       <div
-        id=<%= index %>
+        id="<%= index %>"
         class="map"
         data-controller="map"
         data-hello-target="map"
@@ -29,13 +29,11 @@
       </div>
       <div class="itineraries">
         <% @itinerary.routes.each_with_index do |route, index| %>
-
         <div class="itinerary-card mt-3 d-flex gap-2" id="itinerary-<%= index %>">
           <div class="left-stroke mr-2">
           </div>
           <div class="col">
             <div class="itinerary-head">
-
             <%= link_to "Démarrer ce trajet", route_path(route), class:"btn-secondary" %>
             </div>
             <div id=<%= index %> class="itinerary" data-action="click->hello#displayItinerary">
@@ -48,7 +46,6 @@
                 <strong><%= route.duration.fdiv(60).round %></strong> min
               </span>
               <span>
-
                 <% case route.weight.fdiv(1).round %>
                 <% when 0..200 %>
                   <%= image_tag 'mini_veloo_blue.svg', class:"logocyclability" %>

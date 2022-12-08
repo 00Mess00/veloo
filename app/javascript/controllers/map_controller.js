@@ -19,7 +19,7 @@ export default class extends Controller {
 
     this.map = new mapboxgl.Map({
       container: this.element,
-      style: "mapbox://styles/mapbox/streets-v10"
+      style: "mapbox://styles/hugsdanielwags/clbf0lrwz004n14o0rhtsjr59"
     })
 
     await this.#getUserPosition()

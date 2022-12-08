@@ -28,9 +28,9 @@ export default class extends Controller {
     mapboxgl.accessToken = this.apiKeyValue
     this.map = new mapboxgl.Map({
       container: this.mapTarget,
-      style: "mapbox://styles/mapbox/streets-v10",
+      style: "mapbox://styles/hugsdanielwags/clbf0lrwz004n14o0rhtsjr59",
       center: [this.routeValue.sections[0].from_lng, this.routeValue.sections[0].from_lat],
-      zoom: 20,
+      zoom: 19,
       pitch: 60,
       bearing: turf.bearing(
         turf.point([this.routeValue.sections[0].from_lng, this.routeValue.sections[0].from_lat]),
