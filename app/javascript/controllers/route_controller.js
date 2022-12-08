@@ -54,35 +54,18 @@ export default class extends Controller {
         }
       ]
     };
-    this.counter = 0;
-    this.steps = 10000;
 
-    const line = turf.lineString(this.routeCoordinates);
-    const lineDistance = turf.length(line);
-    this.arc = [];
-    for (let i = 0; i < lineDistance; i += lineDistance / this.steps) {
-      const segment = turf.along(line, i);
-      this.arc.push(segment.geometry.coordinates);
-    }
     let sectionCoordinates = []
-
-    this.instructionTarget.innerText = this.routeValue.sections[0].name
-    this.nextInstructionTarget.innerText = this.routeValue.sections[1].name
-    this.distanceTarget.innerText = this.routeValue.sections[0].distance
-
-    if (this.routeValue.sections[0].instruction == "sharp right" || this.routeValue.sections[0].instruction == "right" || this.routeValue.sections[0].instruction == "slight right" ) {
-      this.imageTarget.src = this.rightValue
-    }
-    if (this.routeValue.sections[0].instruction == "straight" || this.routeValue.sections[0].instruction === null) {
-      console.log(this.straightValue)
-      this.imageTarget.src = this.straightValue
-    }
-    if (this.routeValue.sections[0].instruction == "sharp left" || this.routeValue.sections[0].instruction == "left" || this.routeValue.sections[0].instruction == "slight left" ) {
-      this.imageTarget.src = this.leftValue
-    }
 
     this.routeValue.sections.forEach((section) => {
       let coordinatesFromPolyline = polyline.decode(section.geometry).map((a) => { return a.reverse() })
+      let steps = 0;
+      console.log(coordinatesFromPolyline)
+      if (coordinatesFromPolyline.length > 1) {
+        const sectionLine = turf.lineString(coordinatesFromPolyline);
+        const sectionLineDistance = turf.length(sectionLine);
+        steps = sectionLineDistance * 5000;
+      }
 
       const colors = {
         yellow: '#F9B54F',
@@ -99,13 +82,36 @@ export default class extends Controller {
         color = colors.green
       }
 
-      console.log(section)
       sectionCoordinates.push({
         id: section.id,
         coordinates: coordinatesFromPolyline,
-        color: color
+        color: color,
+        steps: steps
       })
+
     })
+
+    this.steps = 0
+    sectionCoordinates.forEach((s) => {
+      this.steps += s.steps
+    })
+    // this.steps = this.steps * 100
+    console.log(this.steps)
+
+    const line = turf.lineString(this.routeCoordinates);
+    const lineDistance = turf.length(line);
+
+    this.arc = [];
+    for (let i = 0; i < lineDistance; i += lineDistance / this.steps) {
+      const segment = turf.along(line, i);
+      this.arc.push(segment.geometry.coordinates);
+    }
+
+    this.index = 0
+    this.counter = 0
+    this.temp_counter = 0
+    this.updateInstructions(this.index)
+    this.step = sectionCoordinates[this.index].steps
 
     this.map.on('load', () => {
       sectionCoordinates.forEach((sectionCoordinate) => {
@@ -198,12 +204,37 @@ export default class extends Controller {
       });
 
       this.map.getSource('point').setData(this.point);
-
       if (this.counter < this.steps) {
         requestAnimationFrame(animate);
+
+        this.counter = this.counter + 1;
+        this.temp_counter = this.temp_counter + 1;
+
+        if (this.temp_counter >= this.step) {
+          this.index += 1
+          this.updateInstructions(this.index)
+          this.step = sectionCoordinates[this.index].steps
+          this.temp_counter = 0
+        }
       }
 
-      this.counter = this.counter + 1;
+    }
+  }
+
+  updateInstructions(index) {
+    this.instructionTarget.innerText = this.routeValue.sections[index ].name
+    this.nextInstructionTarget.innerText = this.routeValue.sections[index + 1].name
+    this.distanceTarget.innerText = this.routeValue.sections[index].distance
+
+    if (this.routeValue.sections[index + 1].instruction == "sharp right" || this.routeValue.sections[index + 1].instruction == "right" || this.routeValue.sections[index + 1].instruction == "slight right") {
+      this.imageTarget.src = this.rightValue
+    }
+    if (this.routeValue.sections[index + 1].instruction == "straight" || this.routeValue.sections[index + 1].instruction === null) {
+      console.log(this.straightValue)
+      this.imageTarget.src = this.straightValue
+    }
+    if (this.routeValue.sections[index + 1].instruction == "sharp left" || this.routeValue.sections[index + 1].instruction == "left" || this.routeValue.sections[index + 1].instruction == "slight left") {
+      this.imageTarget.src = this.leftValue
     }
   }
 
