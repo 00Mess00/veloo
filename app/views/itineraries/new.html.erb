@@ -4,9 +4,7 @@
   data-map-markers-value="<%= @markers.to_json %>"
   data-map-departure-value="<%= image_path "departure_pin.svg" %>"
   data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
-
 </div>
-
 <div class="container d-flex justify-content-center">
   <%= simple_form_for @itinerary do |f| %>
     <div class="itinerary-search-fields" id="champ" data-controller="address-autocomplete" data-address-autocomplete-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>" data-address-autocomplete-place-holder-value="D'où partons-nous?">
