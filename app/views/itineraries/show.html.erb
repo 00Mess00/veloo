@@ -34,10 +34,6 @@
           <div class="left-stroke mr-2">
           </div>
           <div class="col">
-            <div class="itinerary-head">
-
-            <%= link_to "Démarrer ce trajet", route_path(route), class:"btn-secondary" %>
-            </div>
             <div id=<%= index %> class="itinerary" data-action="click->hello#displayItinerary">
               <span>
                 <%= image_tag 'bottom_distance.png' %>
@@ -48,23 +44,26 @@
                 <strong><%= route.duration.fdiv(60).round %></strong> min
               </span>
               <span>
-
-                <% case route.weight.fdiv(1).round %>
-                <% when 0..200 %>
-                  <%= image_tag 'mini_veloo_blue.svg', class:"logocyclability" %>
-                <% when 201..460 %>
-                  <%= image_tag 'mini_veloo_blue.svg', class:"logocyclability" %>
-                <% when 461..600 %>
-                  <%= image_tag 'mini_veloo_yellow.svg', class:"logocyclability" %>
-                <% when 601..700 %>
-                  <%= image_tag 'mini_veloo_yellow.svg', class:"logocyclability" %>
-                <% when 701..1000 %>
-                  <%= image_tag 'mini_veloo_red.svg', class:"logocyclability" %>
-                <% else %>
-                  <%= image_tag 'mini_veloo_red.svg', class:"logocyclability" %>
-                <% end %>
-                <%# <%= route.weight.fdiv(1).round %></div>
+              <% case route.weight.fdiv(1).round %>
+              <% when 0..200 %>
+                <%= image_tag 'mini_veloo_blue.svg', class:"logocyclability" %>
+              <% when 201..460 %>
+                <%= image_tag 'mini_veloo_blue.svg', class:"logocyclability" %>
+              <% when 461..600 %>
+                <%= image_tag 'mini_veloo_yellow.svg', class:"logocyclability" %>
+              <% when 601..700 %>
+                <%= image_tag 'mini_veloo_yellow.svg', class:"logocyclability" %>
+              <% when 701..1000 %>
+                <%= image_tag 'mini_veloo_red.svg', class:"logocyclability" %>
+              <% else %>
+                <%= image_tag 'mini_veloo_red.svg', class:"logocyclability" %>
+              <% end %>
+              <%# <%= route.weight.fdiv(1).round %></div>
               </span>
+              
+              <div class="itinerary-head">
+                <%= link_to "Démarrer ce trajet", route_path(route), class:"btn-secondary" %>
+              </div>
             </div>
           </div>
         </div>
