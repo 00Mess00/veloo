@@ -3,7 +3,7 @@
   <div class="maps" data-hello-target="maps">
     <% @itinerary.routes.each_with_index do |route, index| %>
       <div
-        id=<%= index %>
+        id="<%= index %>"
         class="map"
         data-controller="map"
         data-hello-target="map"
@@ -29,7 +29,6 @@
       </div>
       <div class="itineraries">
         <% @itinerary.routes.each_with_index do |route, index| %>
-
         <div class="itinerary-card mt-3 d-flex gap-2" id="itinerary-<%= index %>">
           <div class="left-stroke mr-2">
           </div>
@@ -41,6 +40,7 @@
                 court
               <% else %>
                 sécurisé
+              <% end %>
             </p>
             <%= link_to "Démarrer ce trajet", route_path(route), class:"btn-secondary" %>
             </div>
@@ -58,7 +58,6 @@
                 <% case route.weight.fdiv(1).round %>
                 <% when 0..300 %>
                   <strong>0/5</strong>
-
                 <% when 301..400 %>
                   <strong>1/5</strong>
                 <% when 401..600 %>
