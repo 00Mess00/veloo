@@ -18,9 +18,34 @@
   display:flex;
   align-items: center;
   justify-content: space-between;
+  .label {
+    font-size:16px !important;
+  }
 }
 .itinerary {
   padding:12px 0px;
   display: flex;
   justify-content: space-between;
+}
+
+.itinerary-card .itinerary {
+  padding-top:4px;
+}
+
+.left-stroke {
+  height:48px;
+  background:$yellow;
+  width:4px;
+}
+
+#itinerary-1 .left-stroke {
+  background: $green;
+}
+
+.logocyclability{
+  width:20px;
+}
+
+.pin_arrival{
+  width:20px;
 }
