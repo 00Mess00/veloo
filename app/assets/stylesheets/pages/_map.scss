@@ -89,6 +89,16 @@
 .anim-icon {
   animation: gelatine 0.5s;
 }
+
+.pop-marker {
+  animation: pop 0.5s;
+}
+
+@keyframes pop {
+  0% { top:-100px }
+  100% { top: 0px; }
+}
+
 @keyframes gelatine {
   from, to { transform: scale(1, 1); }
   25% { transform: scale(0.9, 1.1); }
