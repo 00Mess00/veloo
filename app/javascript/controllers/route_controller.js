@@ -260,6 +260,7 @@ export default class extends Controller {
     })
   }
 
+
   addSpecificMarkersToMap(lat, lng, img) {
     const customMarker = document.createElement("div")
     customMarker.className = `new-marker`
@@ -325,6 +326,7 @@ export default class extends Controller {
   }
 
   async addWarning(event) {
+    //event.currentTarget.classList.add('anim-icon')
     const map = document.getElementById("route-map")
     const sections = this.routeValue.sections
     let id = 0
@@ -361,5 +363,10 @@ export default class extends Controller {
       }
       this.addSpecificMarkersToMap(navigatorPos[1], navigatorPos[0], event.currentTarget.dataset.routeImgValue)
     })
+  }
+  showAllMarkers(e) {
+    e.currentTarget.querySelector('.open').classList.toggle('d-none');
+    e.currentTarget.querySelector('.cross').classList.toggle('d-none');
+    document.querySelectorAll('.warnings-icons').forEach(icon => icon.classList.toggle('bottom-70'))
   }
 }

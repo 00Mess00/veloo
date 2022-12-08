@@ -8,6 +8,10 @@
   padding:8px 12px;
   border:1px solid $black-400;
   border-radius: 8px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100%;
+  white-space: nowrap;
   img {
     height: 20px;
     width: 16px;
@@ -15,6 +19,7 @@
 }
 
 .itinerary-head {
+  margin-top:-4px;
   display:flex;
   align-items: center;
   justify-content: space-between;
@@ -23,7 +28,7 @@
   }
 }
 .itinerary {
-  padding: 0px 0px;
+  padding:0px;
   display: flex;
   justify-content: space-between;
 }

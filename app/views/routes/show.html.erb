@@ -48,30 +48,33 @@
     </div>
   </div>
   <div class="warnings">
-    <%= image_tag "warning.svg", :class => "warning iconMapShadow" %>
+    <div class="warning" data-action="click->route#showAllMarkers">
+      <%= image_tag "warning_cross.svg", class:"iconMapShadow d-none cross" %>
+      <%= image_tag "warning.svg", class:"iconMapShadow open" %>
+    </div>
     <div
       data-action="click->route#addWarning"
       data-route-type-value="splash"
       data-route-img-value="<%= image_path "pin_splash.svg" %>">
-      <%= image_tag "warning_splash.svg", :class => "warning_splash iconMapShadow" %>
+      <%= image_tag "warning_splash.svg", :class => "warning_splash iconMapShadow warnings-icons bottom-70" %>
     </div>
     <div
       data-action="click->route#addWarning"
       data-route-type-value="obstacle"
       data-route-img-value="<%= image_path "pin_obstacle.svg" %>">
-      <%= image_tag "warning_obstacle.svg", :class => "warning_obstacle iconMapShadow" %>
+      <%= image_tag "warning_obstacle.svg", :class => "warning_obstacle iconMapShadow warnings-icons bottom-70" %>
     </div>
     <div
       data-action="click->route#addWarning"
       data-route-type-value="doubleparking"
       data-route-img-value="<%= image_path "pin_double_parking.svg" %>">
-      <%= image_tag "warning_double_parking.svg", :class => "warning_parking iconMapShadow" %>
+      <%= image_tag "warning_double_parking.svg", :class => "warning_parking iconMapShadow warnings-icons bottom-70" %>
     </div>
     <div
       data-action="click->route#addWarning"
       data-route-type-value="dog"
       data-route-img-value="<%= image_path "pin_dog.svg" %>">
-      <%= image_tag "warning_dog.svg", :class => "warning_dog iconMapShadow" %>
+      <%= image_tag "warning_dog.svg", :class => "warning_dog iconMapShadow warnings-icons bottom-70" %>
     </div>
   </div>
   <div class="cyclab">
