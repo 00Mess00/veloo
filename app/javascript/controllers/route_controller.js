@@ -15,7 +15,8 @@ export default class extends Controller {
     straight: String,
     url: String,
     type: String,
-    img: String
+    img: String,
+    warnings: Array
   }
 
   static targets = ["instruction", "nextInstruction", "distance", "image", "map"]
@@ -36,6 +37,7 @@ export default class extends Controller {
         turf.point([this.routeValue.sections[0].to_lng, this.routeValue.sections[0].to_lat])
       ),
     })
+    this.#addMarkersToMap()
     this.map.setPadding({top: 500})
 
     this.routeCoordinates = polyline.decode(this.routeValue.geometry).map((a) => { return a.reverse() })
@@ -62,11 +64,6 @@ export default class extends Controller {
       const segment = turf.along(line, i);
       this.arc.push(segment.geometry.coordinates);
     }
-
-    // const bounds = new mapboxgl.LngLatBounds()
-    // bounds.extend(this.boundsValue)
-    // this.map.fitBounds(bounds, { padding: 70, maxZoom: 15, duration: 0 })
-
     let sectionCoordinates = []
 
     this.instructionTarget.innerText = this.routeValue.sections[0].name
@@ -84,9 +81,7 @@ export default class extends Controller {
       this.imageTarget.src = this.leftValue
     }
 
-    // Pour chaque section de la route
     this.routeValue.sections.forEach((section) => {
-      // Je transforme la polyline en Array de coordonnées avec un module mapbox
       let coordinatesFromPolyline = polyline.decode(section.geometry).map((a) => { return a.reverse() })
 
       const colors = {
@@ -104,8 +99,9 @@ export default class extends Controller {
         color = colors.green
       }
 
+      console.log(section)
       sectionCoordinates.push({
-        id: Math.random().toString(16).slice(2),
+        id: section.id,
         coordinates: coordinatesFromPolyline,
         color: color
       })
@@ -181,22 +177,12 @@ export default class extends Controller {
         ];
       if (!start || !end) return;
 
-      // Update point geometry to a new position based on this.counter denoting
-      // the index to access the arc
-      this.point.features[0].geometry.coordinates =
-        this.arc[this.counter];
+      this.point.features[0].geometry.coordinates = this.arc[this.counter];
 
-      // Calculate the bearing to ensure the icon is rotated to match the route arc
-      // The bearing is calculated between the current this.point and the next this.point, except
-      // at the end of the arc, which uses the previous this.point and the current this.point
       this.point.features[0].properties.bearing = turf.bearing(
         turf.point(start),
         turf.point(end)
       );
-      // this.map.setBearing(turf.bearing(
-      //   turf.point(start),
-      //   turf.point(end)
-      // ))
       let turfBearing = turf.bearing(
         turf.point(start),
         turf.point(end)
@@ -211,13 +197,9 @@ export default class extends Controller {
         }
       });
 
-      // Update the source with this new data
       this.map.getSource('point').setData(this.point);
 
-      // Request the next frame of animation as long as the end has not been reached
       if (this.counter < this.steps) {
-        // setTimeout(() =>{
-        // }, 2000)
         requestAnimationFrame(animate);
       }
 
@@ -225,8 +207,22 @@ export default class extends Controller {
     }
   }
 
+  #addMarkersToMap() {
+    this.warningsValue.forEach((warning) => {
+      const customMarker = document.createElement("div")
+      customMarker.className = "marker"
+      customMarker.style.backgroundImage = `url('${warning.image}')`
+      customMarker.style.backgroundSize = "cover"
+      customMarker.style.width = "40px"
+      customMarker.style.height = "40px"
+
+      new mapboxgl.Marker(customMarker)
+        .setLngLat([warning.lng, warning.lat])
+        .addTo(this.map)
+    })
+  }
+
   addSpecificMarkersToMap(lat, lng, img) {
-    // Create a HTML element for your custom marker
     const customMarker = document.createElement("div")
     customMarker.className = "marker"
     customMarker.style.backgroundImage = `url('${img}')`
@@ -244,27 +240,20 @@ export default class extends Controller {
     const sections = this.routeValue.sections
     let id = 0
 
-    // on récupère les coordonnées GPS de l'utilisateur
     const navigatorPos = this.point.features[0].geometry.coordinates
 
-    // Pour chaque section
     sections.forEach((section) => {
-      // On récupère sa géométrie
       const geom = section.geometry
-      // On la décode (polyline.decode)
       const geomDecod = polyline.decode(geom)
 
-      // On prend les extrémités de ces points
       const minLat = Math.min(...geomDecod.map(coordinates => coordinates[0]))
       const maxLat = Math.max(...geomDecod.map(coordinates => coordinates[0]))
       const minLong = Math.min(...geomDecod.map(coordinates => coordinates[1]))
       const maxLong = Math.max(...geomDecod.map(coordinates => coordinates[1]))
 
-      // On regarde si le point fait partie de la boite
       let intervalLat = new Interval(`(${minLat}, ${maxLat})`)
       let intervalLong = new Interval(`(${minLong}, ${maxLong})`)
       if (intervalLat.contains(navigatorPos[1]) && intervalLong.contains(navigatorPos[0])) {
-        // Si oui, on récupère l'id de la section et on arrete tout.
         id = section.id
         const formData = new FormData()
         formData.append("type", event.currentTarget.dataset.routeTypeValue)
@@ -277,7 +266,21 @@ export default class extends Controller {
           body: formData
         }).then(response => response.json())
         .then((data) => {
-          console.log(data)
+          const colors = {
+            yellow: '#F9B54F',
+            red: '#F3574A',
+            green: '#5ABFAD'
+          }
+
+          let color
+          if (data.weight >= 100) {
+            color = colors.red
+          } else if (data.weight >= 50) {
+            color = colors.yellow
+          } else {
+            color = colors.green
+          }
+          this.map.setPaintProperty(`route-${data.id}`, 'line-color', color)
         })
       }
     })
@@ -292,25 +295,19 @@ export default class extends Controller {
     // const navigatorPos = await this.getPosition()
     const navigatorPos = this.point.features[0].geometry.coordinates
 
-    // Pour chaque section
     sections.forEach((section) => {
-      // On récupère sa géométrie
       const geom = section.geometry
-      // On la décode (polyline.decode)
       const geomDecod = polyline.decode(geom)
 
-      // On prend les extrémités de ces points
       const minLat = Math.min(...geomDecod.map(coordinates => coordinates[0]))
       const maxLat = Math.max(...geomDecod.map(coordinates => coordinates[0]))
       const minLong = Math.min(...geomDecod.map(coordinates => coordinates[1]))
       const maxLong = Math.max(...geomDecod.map(coordinates => coordinates[1]))
 
-      // On regarde si le point fait partie de la boite
       let intervalLat = new Interval(`(${minLat}, ${maxLat})`)
       let intervalLong = new Interval(`(${minLong}, ${maxLong})`)
 
       if (intervalLat.contains(navigatorPos[1]) && intervalLong.contains(navigatorPos[0])) {
-        // Si oui, on récupère l'id de la section et on arrete tout.
         id = section.id
         const formData = new FormData()
         formData.append("type", event.currentTarget.dataset.routeTypeValue)
@@ -326,8 +323,8 @@ export default class extends Controller {
           body: formData
         })
 
-        this.addSpecificMarkersToMap(navigatorPos[1], navigatorPos[0], event.currentTarget.dataset.routeImgValue)
       }
+      this.addSpecificMarkersToMap(navigatorPos[1], navigatorPos[0], event.currentTarget.dataset.routeImgValue)
     })
   }
 }
