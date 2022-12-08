@@ -142,35 +142,25 @@ export default class extends Controller {
           }
         });
       })
-      this.map.loadImage(
-        'https://docs.mapbox.com/mapbox-gl-js/assets/cat.png',
-        (error, image) => {
-          if (error) throw error;
+      this.map.addSource('point', {
+        'type': 'geojson',
+        'data': this.point
+      });
 
-          // Add the image to the map style.
-          this.map.addImage('cat', image);
-
-          this.map.addSource('point', {
-            'type': 'geojson',
-            'data': this.point
-          });
-
-          this.map.addLayer({
-            'id': 'point',
-            'source': 'point',
-            'type': 'symbol',
-            'layout': {
-              'icon-image': '',
-              'icon-size': 0.1,
-              'icon-rotate': ['get', 'bearing'],
-              'icon-rotation-alignment': 'map',
-              'icon-allow-overlap': true,
-              'icon-ignore-placement': true
-            }
-          });
-          animate(this.counter);
+      this.map.addLayer({
+        'id': 'point',
+        'source': 'point',
+        'type': 'symbol',
+        'layout': {
+          'icon-image': '',
+          'icon-size': 0.1,
+          'icon-rotate': ['get', 'bearing'],
+          'icon-rotation-alignment': 'map',
+          'icon-allow-overlap': true,
+          'icon-ignore-placement': true
         }
-      )
+      });
+      animate(this.counter);
     })
 
     const animate = () => {
@@ -205,7 +195,7 @@ export default class extends Controller {
       });
 
       this.map.getSource('point').setData(this.point);
-      if (this.counter < this.steps) {
+      if (this.counter <= this.steps) {
         requestAnimationFrame(animate);
 
         this.counter = this.counter + 1;
@@ -223,8 +213,13 @@ export default class extends Controller {
           this.step = sectionCoordinates[this.index].steps
           this.temp_counter = 0
         }
+        console.log(this.counter)
+        console.log(this.steps)
+        if (this.counter === Math.round(this.steps)) {
+          console.log("Hello world")
+          window.location.replace(`/arrival?lat=${this.point.features[0].geometry.coordinates[1]}&lng=${this.point.features[0].geometry.coordinates[0]}`)
+        }
       }
-
     }
   }
 
