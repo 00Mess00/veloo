@@ -12,9 +12,9 @@ export default class extends Controller {
 
     this.map = new mapboxgl.Map({
       container: this.element,
-      style: "mapbox://styles/mapbox/streets-v10",
+      style: "mapbox://styles/hugsdanielwags/clbf0lrwz004n14o0rhtsjr59",
       center: [this.markerValue.lng, this.markerValue.lat],
-      zoom: 19
+      zoom: 18
     })
 
     const customMarker = document.createElement("div")
