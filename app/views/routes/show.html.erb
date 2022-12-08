@@ -7,7 +7,8 @@
     data-route-bounds-value="<%= @route.itinerary.bounds.to_json %>"
     data-route-left-value="<%= image_url "dir_turn_left_green.png" %>"
     data-route-right-value="<%= image_url "dir_turn_right_green.png" %>"
-    data-route-straight-value="<%= image_url "dir_straight_green.png" %>">
+    data-route-straight-value="<%= image_url "dir_straight_green.png" %>"
+    data-route-warnings-value="<%= @warnings.to_json %>">
   <div data-route-target="map" class="map-route"></div>
   <div class="navigation">
     <div class="directions">
