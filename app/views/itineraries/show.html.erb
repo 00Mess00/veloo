@@ -35,15 +35,15 @@
             <div class="col">
               <div id=<%= index %> class="itinerary" data-action="click->hello#displayItinerary">
                 <span>
-                  <%= image_tag 'bottom_distance.png' %>
+                  <%= image_tag 'bottom_distance.png' , class:"bottom-img" %>
                   <strong><%= route.distance.fdiv(1000).round(2) %></strong> km
                 </span>
                 <span>
-                  <%= image_tag 'bottom_clock.png' %>
+                  <%= image_tag 'bottom_clock.png' , class:"bottom-img" %>
                   <strong><%= route.duration.fdiv(60).round %></strong> min
                 </span>
                 <span>
-                  <%= image_tag 'bottom_warning.png' %>
+                  <%= image_tag 'bottom_warning.png' , class:"bottom-img" %>
                   <strong><%= route.section_warnings.count %></strong>
                 </span>
                 <span>
