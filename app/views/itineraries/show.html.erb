@@ -10,7 +10,8 @@
         data-map-markers-value="<%= @markers.to_json %>"
         data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
         data-map-routes-value="<%= [route.sections].to_json %>"
-        data-map-bounds-value="<%= @itinerary.bounds.to_json %>">
+        data-map-bounds-value="<%= @itinerary.bounds.to_json %>"
+        data-map-warnings-value="<%= route.warnings.to_json %>">
       </div>
     <% end %>
   </div>
@@ -18,36 +19,61 @@
     <div class="itinerary-wrapper">
       <div class="itinerary-resume">
         <span class="p--tiny itinerary-infos">
-          <%= image_tag 'pin_start'%>
+          <%= image_tag 'pin_start.png'%>
           <%= @itinerary.departure %>
         </span>
         <span class="p--tiny itinerary-infos">
-          <%= image_tag 'pin_arrival' %>
+          <%= image_tag 'pin_arrival.png', class:"pin_arrival" %>
           <%= @itinerary.arrival %>
         </span>
       </div>
       <div class="itineraries">
         <% @itinerary.routes.each_with_index do |route, index| %>
 
-        <div class="itinerary-card mt-3">
-          <div class="itinerary-head">
-            <p class = "label m-0">
-              Le plus court
-            </p>
-            <%= link_to "Démarrer ce trajet", route_path(route) %>
+        <div class="itinerary-card mt-3 d-flex gap-2" id="itinerary-<%= index %>">
+          <div class="left-stroke mr-2">
           </div>
-          <div id=<%= index %> class="itinerary" data-action="click->hello#displayItinerary">
-            <span>
-              <%= image_tag 'bottom_distance' %>
-              <%= route.distance.fdiv(1000).round(2) %>km
-            </span>
-            <span>
-              <%= image_tag 'bottom_clock' %>
-              <%= route.duration.fdiv(60).round %> min.
-            </span>
-            <span>
-              <%= route.weight.fdiv(1).round %> veloo</div>
-            </span>
+          <div class="col">
+            <div class="itinerary-head">
+            <p class = "label m-0">
+              le plus
+              <% if index == 0 %>
+                court
+              <% else %>
+                sécurisé
+              <% end  %>
+            </p>
+            <%= link_to "Démarrer ce trajet", route_path(route), class:"btn-secondary" %>
+            </div>
+            <div id=<%= index %> class="itinerary" data-action="click->hello#displayItinerary">
+              <span>
+                <%= image_tag 'bottom_distance.png' %>
+                <strong><%= route.distance.fdiv(1000).round(2) %></strong> km
+              </span>
+              <span>
+                <%= image_tag 'bottom_clock.png' %>
+                <strong><%= route.duration.fdiv(60).round %></strong> min
+              </span>
+              <span>
+                <%= image_tag 'cyclist_1_active.png', class:"logocyclability" %>
+                <% case route.weight.fdiv(1).round %>
+                <% when 0..300 %>
+                  <strong>0/5</strong>
+
+                <% when 301..400 %>
+                  <strong>1/5</strong>
+                <% when 401..600 %>
+                  <strong>2/5</strong>
+                <% when 601..900 %>
+                  <strong>3/5</strong>
+                <% when 901..1000 %>
+                  <strong>4/5</strong>
+                <% else %>
+                  <strong>5/5</strong>
+                <% end %>
+                <%#= route.weight.fdiv(1).round %></div>
+              </span>
+            </div>
           </div>
         </div>
         <% end %>
