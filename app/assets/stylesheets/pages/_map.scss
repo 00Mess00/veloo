@@ -22,10 +22,10 @@
   z-index: 9999;
 }
 
-.cyclab-bad:hover, 
-.cyclab-middle:hover, 
-.cyclab-good:hover, 
-.warning:hover, 
+.cyclab-bad:hover,
+.cyclab-middle:hover,
+.cyclab-good:hover,
+.warning:hover,
 .warning_dog:hover,
 .warning_splash:hover,
 .warning_obstacle:hover,
@@ -83,6 +83,7 @@
   padding: 32px 16px 16px 16px;
   background: white;
   width:100vw;
+  height: 42vh;
 }
 
 /* Animation */
@@ -108,4 +109,8 @@
 .mapboxgl-map {
   position: absolute !important;
 
+}
+
+.bottom-img {
+  margin-bottom: 5px;
 }
