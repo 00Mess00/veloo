@@ -10,21 +10,27 @@
       </div>
       <div class="line-direction"></div>
     </div>
-    <div class="summary-arrival">
-      <h2>Notez la cyclabilité globale de ce trajet</h2>
-      <div class="summary-cyclability">
+    <div
+      class="map-route"
+      data-controller="final-map"
+      data-final-map-marker-value="<%= @marker.to_json %>"
+      data-final-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+    </div>
+    <div class="summary-arrival" data-controller="greet">
+      <h2 data-greet-target="message">Notez la cyclabilité globale de ce trajet</h2>
+      <div class="summary-cyclability" data-greet-target="icons">
         <div class="cyclability item">
-          <%= image_tag 'cyclab_GOOD.svg', width: '20', height: '40', :class => ""  %>
+          <%= image_tag 'cyclab_GOOD.svg', width: '20', height: '40', :class => "", data: {action: "click->greet#fire"}  %>
           <%# <p><strong><%= @route.duration.fdiv(60).round %>
           <%# </strong></p> %>
         </div>
         <div class="distance item">
-          <%= image_tag 'cyclab_MIDDLE.svg', width: '20', height: '40', :class => ""  %>
+          <%= image_tag 'cyclab_MIDDLE.svg', width: '20', height: '40', :class => "", data: {action: "click->greet#fire"}  %>
           <%# <p><strong><%= @route.distance.fdiv(1000).round(2) %>
           <%# </strong></p> %>
         </div>
         <div class="arrival item">
-          <%= image_tag 'cyclab_BAD.svg', width: '20', height: '40', :class => ""  %>
+          <%= image_tag 'cyclab_BAD.svg', width: '20', height: '40', :class => "", data: {action: "click->greet#fire"}  %>
           <%# <p><strong><%= (Time.now + @route.duration.fdiv(60).round.minutes).strftime("%Hh%M") %>
           <%# </strong></p> %>
         </div>
