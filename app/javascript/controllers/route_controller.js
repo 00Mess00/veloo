@@ -131,7 +131,7 @@ export default class extends Controller {
           },
           'paint': {
             'line-color': sectionCoordinate.color,
-            'line-width': 8
+            'line-width': 20
           }
         });
       })
