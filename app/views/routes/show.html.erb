@@ -30,11 +30,11 @@
     <div class="summary">
       <div class="clock item">
         <%= image_tag 'bottom_clock.svg', width: '20', height: '40', :class => ""  %>
-        <p><strong><%= @route.duration.fdiv(60).round %></strong> min</p>
+        <p><strong data-route-target="totalTime"><%= @route.duration.fdiv(60).round %></strong> min</p>
       </div>
       <div class="distance item">
         <%= image_tag 'bottom_distance.svg', width: '20', height: '40', :class => ""  %>
-        <p><strong><%= @route.distance.fdiv(1000).round(2) %></strong> km</p>
+        <p><strong data-route-target="totalDistance"><%= @route.distance.fdiv(1000).round(2) %></strong> km</p>
       </div>
       <div class="arrival item">
         <%= image_tag 'bottom_flag.svg', width: '20', height: '40', :class => ""  %>
