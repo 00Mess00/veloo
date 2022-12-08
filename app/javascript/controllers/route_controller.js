@@ -19,7 +19,7 @@ export default class extends Controller {
     warnings: Array
   }
 
-  static targets = ["instruction", "nextInstruction", "distance", "image", "map"]
+  static targets = ["instruction", "nextInstruction", "distance", "image", "map", "totalDistance", "totalTime"]
 
   connect() {
     // navigator.geolocation.getCurrentPosition = function(successCallback, errorCallback) {
@@ -64,7 +64,7 @@ export default class extends Controller {
       if (coordinatesFromPolyline.length > 1) {
         const sectionLine = turf.lineString(coordinatesFromPolyline);
         const sectionLineDistance = turf.length(sectionLine);
-        steps = sectionLineDistance * 5000;
+        steps = sectionLineDistance * 3000;
       }
 
       const colors = {
@@ -100,6 +100,7 @@ export default class extends Controller {
 
     const line = turf.lineString(this.routeCoordinates);
     const lineDistance = turf.length(line);
+    this.totalDistance = lineDistance
 
     this.arc = [];
     for (let i = 0; i < lineDistance; i += lineDistance / this.steps) {
@@ -209,6 +210,12 @@ export default class extends Controller {
 
         this.counter = this.counter + 1;
         this.temp_counter = this.temp_counter + 1;
+
+        this.newTotalDistance = (Math.round(this.totalDistance * 1000 / 100) - Math.round((this.counter * this.totalDistance / this.steps) * 1000 / 100)) / 10
+        this.newDistance = (Math.round(this.routeValue.sections[this.index].distance / 10) - Math.round(Math.round(this.temp_counter * this.routeValue.sections[this.index].distance / this.step) / 10)) * 10
+
+        this.distanceTarget.innerText = this.newDistance
+        this.totalDistanceTarget.innerText = this.newTotalDistance
 
         if (this.temp_counter >= this.step) {
           this.index += 1
