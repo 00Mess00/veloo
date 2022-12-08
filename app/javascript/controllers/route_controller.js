@@ -264,6 +264,7 @@ export default class extends Controller {
   addSpecificMarkersToMap(lat, lng, img) {
     const customMarker = document.createElement("div")
     customMarker.className = `new-marker`
+    customMarker.classList.add('pop-marker')
     customMarker.style.backgroundImage = `url('${img}')`
     customMarker.style.backgroundSize = "contain"
     customMarker.style.width = `37px`
