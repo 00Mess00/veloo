@@ -2,12 +2,44 @@
   margin-top: -24px;
 }
 
+.new_itinerary {
+  width:90%;
+}
+
+.bottom-70 {
+  bottom:70px !important;
+  transition:.3s;
+  filter: drop-shadow(-1px 3px 2px rgba(0, 0, 0, 0)) !important;
+  transition-timing-function: cubic-bezier(0.7, 0, 0.7, 1.5);
+}
+
+.warnings-icons {
+  transition:.3s;
+  transition-timing-function: ease-out;
+}
+
+.warning {
+  z-index: 9999;
+}
+
+.cyclab-bad:hover,
+.cyclab-middle:hover,
+.cyclab-good:hover,
+.warning:hover,
+.warning_dog:hover,
+.warning_splash:hover,
+.warning_obstacle:hover,
+.warning_parking:hover,
+ {
+  animation: gelatine 0.5s !important;
+}
+
 .map {
   bottom: 0;
   min-width: 100%;
   max-width: 100%;
-  min-height: 80vh;
-  max-height: 80vh;
+  min-height: 60vh;
+  max-height: 60vh;
   position: absolute;
   top: 0px;
   object-fit: cover;
@@ -23,6 +55,25 @@
   display: none !important;
 }
 
+.mapboxgl-ctrl-geocoder--icon-search {
+  top:22px;
+}
+
+.mapboxgl-ctrl-geocoder {
+  border: 1px solid #BABABA !important;
+  border-radius: 8px !important;
+  &:first-child {
+    margin-bottom:16px;
+  }
+}
+
+.mapboxgl-ctrl-geocoder--input {
+  font-family: 'Baloo Bhaijaan 2' !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  font-size: 16px !important;
+}
+
 .itinerary-wrapper {
   position: fixed;
   border-top-left-radius: 32px;
@@ -32,13 +83,23 @@
   padding: 32px 16px 16px 16px;
   background: white;
   width:100vw;
+  height: 42vh;
 }
-
 
 /* Animation */
 .anim-icon {
   animation: gelatine 0.5s;
 }
+
+.pop-marker {
+  animation: pop 0.5s;
+}
+
+@keyframes pop {
+  0% { top:-100px }
+  100% { top: 0px; }
+}
+
 @keyframes gelatine {
   from, to { transform: scale(1, 1); }
   25% { transform: scale(0.9, 1.1); }
@@ -48,4 +109,8 @@
 .mapboxgl-map {
   position: absolute !important;
 
+}
+
+.bottom-img {
+  margin-bottom: 5px;
 }

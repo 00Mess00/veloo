@@ -6,5 +6,10 @@ class PagesController < ApplicationController
   end
 
   def arrival
+    @marker = {
+      lng: params[:lng],
+      lat: params[:lat],
+      img: ActionController::Base.helpers.image_url('arrival_pin.svg')
+    }
   end
 end

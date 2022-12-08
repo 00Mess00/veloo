@@ -19,7 +19,7 @@ export default class extends Controller {
     warnings: Array
   }
 
-  static targets = ["instruction", "nextInstruction", "distance", "image", "map"]
+  static targets = ["instruction", "nextInstruction", "distance", "image", "map", "totalDistance", "totalTime"]
 
   connect() {
     // navigator.geolocation.getCurrentPosition = function(successCallback, errorCallback) {
@@ -28,9 +28,9 @@ export default class extends Controller {
     mapboxgl.accessToken = this.apiKeyValue
     this.map = new mapboxgl.Map({
       container: this.mapTarget,
-      style: "mapbox://styles/mapbox/streets-v10",
+      style: "mapbox://styles/hugsdanielwags/clbf0lrwz004n14o0rhtsjr59",
       center: [this.routeValue.sections[0].from_lng, this.routeValue.sections[0].from_lat],
-      zoom: 20,
+      zoom: 19,
       pitch: 60,
       bearing: turf.bearing(
         turf.point([this.routeValue.sections[0].from_lng, this.routeValue.sections[0].from_lat]),
@@ -54,35 +54,18 @@ export default class extends Controller {
         }
       ]
     };
-    this.counter = 0;
-    this.steps = 10000;
 
-    const line = turf.lineString(this.routeCoordinates);
-    const lineDistance = turf.length(line);
-    this.arc = [];
-    for (let i = 0; i < lineDistance; i += lineDistance / this.steps) {
-      const segment = turf.along(line, i);
-      this.arc.push(segment.geometry.coordinates);
-    }
     let sectionCoordinates = []
-
-    this.instructionTarget.innerText = this.routeValue.sections[0].name
-    this.nextInstructionTarget.innerText = this.routeValue.sections[1].name
-    this.distanceTarget.innerText = this.routeValue.sections[0].distance
-
-    if (this.routeValue.sections[0].instruction == "sharp right" || this.routeValue.sections[0].instruction == "right" || this.routeValue.sections[0].instruction == "slight right" ) {
-      this.imageTarget.src = this.rightValue
-    }
-    if (this.routeValue.sections[0].instruction == "straight" || this.routeValue.sections[0].instruction === null) {
-      console.log(this.straightValue)
-      this.imageTarget.src = this.straightValue
-    }
-    if (this.routeValue.sections[0].instruction == "sharp left" || this.routeValue.sections[0].instruction == "left" || this.routeValue.sections[0].instruction == "slight left" ) {
-      this.imageTarget.src = this.leftValue
-    }
 
     this.routeValue.sections.forEach((section) => {
       let coordinatesFromPolyline = polyline.decode(section.geometry).map((a) => { return a.reverse() })
+      let steps = 0;
+      console.log(coordinatesFromPolyline)
+      if (coordinatesFromPolyline.length > 1) {
+        const sectionLine = turf.lineString(coordinatesFromPolyline);
+        const sectionLineDistance = turf.length(sectionLine);
+        steps = sectionLineDistance * 3000;
+      }
 
       const colors = {
         yellow: '#F9B54F',
@@ -99,13 +82,37 @@ export default class extends Controller {
         color = colors.green
       }
 
-      console.log(section)
       sectionCoordinates.push({
         id: section.id,
         coordinates: coordinatesFromPolyline,
-        color: color
+        color: color,
+        steps: steps
       })
+
     })
+
+    this.steps = 0
+    sectionCoordinates.forEach((s) => {
+      this.steps += s.steps
+    })
+    // this.steps = this.steps * 100
+    console.log(this.steps)
+
+    const line = turf.lineString(this.routeCoordinates);
+    const lineDistance = turf.length(line);
+    this.totalDistance = lineDistance
+
+    this.arc = [];
+    for (let i = 0; i < lineDistance; i += lineDistance / this.steps) {
+      const segment = turf.along(line, i);
+      this.arc.push(segment.geometry.coordinates);
+    }
+
+    this.index = 0
+    this.counter = 0
+    this.temp_counter = 0
+    this.updateInstructions(this.index)
+    this.step = sectionCoordinates[this.index].steps
 
     this.map.on('load', () => {
       sectionCoordinates.forEach((sectionCoordinate) => {
@@ -131,39 +138,29 @@ export default class extends Controller {
           },
           'paint': {
             'line-color': sectionCoordinate.color,
-            'line-width': 8
+            'line-width': 20
           }
         });
       })
-      this.map.loadImage(
-        'https://docs.mapbox.com/mapbox-gl-js/assets/cat.png',
-        (error, image) => {
-          if (error) throw error;
+      this.map.addSource('point', {
+        'type': 'geojson',
+        'data': this.point
+      });
 
-          // Add the image to the map style.
-          this.map.addImage('cat', image);
-
-          this.map.addSource('point', {
-            'type': 'geojson',
-            'data': this.point
-          });
-
-          this.map.addLayer({
-            'id': 'point',
-            'source': 'point',
-            'type': 'symbol',
-            'layout': {
-              'icon-image': '',
-              'icon-size': 0.1,
-              'icon-rotate': ['get', 'bearing'],
-              'icon-rotation-alignment': 'map',
-              'icon-allow-overlap': true,
-              'icon-ignore-placement': true
-            }
-          });
-          animate(this.counter);
+      this.map.addLayer({
+        'id': 'point',
+        'source': 'point',
+        'type': 'symbol',
+        'layout': {
+          'icon-image': '',
+          'icon-size': 0.1,
+          'icon-rotate': ['get', 'bearing'],
+          'icon-rotation-alignment': 'map',
+          'icon-allow-overlap': true,
+          'icon-ignore-placement': true
         }
-      )
+      });
+      animate(this.counter);
     })
 
     const animate = () => {
@@ -198,12 +195,48 @@ export default class extends Controller {
       });
 
       this.map.getSource('point').setData(this.point);
-
-      if (this.counter < this.steps) {
+      if (this.counter <= this.steps) {
         requestAnimationFrame(animate);
-      }
 
-      this.counter = this.counter + 1;
+        this.counter = this.counter + 1;
+        this.temp_counter = this.temp_counter + 1;
+
+        this.newTotalDistance = (Math.round(this.totalDistance * 1000 / 100) - Math.round((this.counter * this.totalDistance / this.steps) * 1000 / 100)) / 10
+        this.newDistance = (Math.round(this.routeValue.sections[this.index].distance / 10) - Math.round(Math.round(this.temp_counter * this.routeValue.sections[this.index].distance / this.step) / 10)) * 10
+
+        this.distanceTarget.innerText = this.newDistance
+        this.totalDistanceTarget.innerText = this.newTotalDistance
+
+        if (this.temp_counter >= this.step) {
+          this.index += 1
+          this.updateInstructions(this.index)
+          this.step = sectionCoordinates[this.index].steps
+          this.temp_counter = 0
+        }
+        console.log(this.counter)
+        console.log(this.steps)
+        if (this.counter === Math.round(this.steps)) {
+          console.log("Hello world")
+          window.location.replace(`/arrival?lat=${this.point.features[0].geometry.coordinates[1]}&lng=${this.point.features[0].geometry.coordinates[0]}`)
+        }
+      }
+    }
+  }
+
+  updateInstructions(index) {
+    this.instructionTarget.innerText = this.routeValue.sections[index ].name
+    this.nextInstructionTarget.innerText = this.routeValue.sections[index + 1].name
+    this.distanceTarget.innerText = this.routeValue.sections[index].distance
+
+    if (this.routeValue.sections[index + 1].instruction == "sharp right" || this.routeValue.sections[index + 1].instruction == "right" || this.routeValue.sections[index + 1].instruction == "slight right") {
+      this.imageTarget.src = this.rightValue
+    }
+    if (this.routeValue.sections[index + 1].instruction == "straight" || this.routeValue.sections[index + 1].instruction === null) {
+      console.log(this.straightValue)
+      this.imageTarget.src = this.straightValue
+    }
+    if (this.routeValue.sections[index + 1].instruction == "sharp left" || this.routeValue.sections[index + 1].instruction == "left" || this.routeValue.sections[index + 1].instruction == "slight left") {
+      this.imageTarget.src = this.leftValue
     }
   }
 
@@ -222,13 +255,15 @@ export default class extends Controller {
     })
   }
 
+
   addSpecificMarkersToMap(lat, lng, img) {
     const customMarker = document.createElement("div")
-    customMarker.className = "marker"
+    customMarker.className = `new-marker`
+    customMarker.classList.add('pop-marker')
     customMarker.style.backgroundImage = `url('${img}')`
     customMarker.style.backgroundSize = "contain"
-    customMarker.style.width = "53px"
-    customMarker.style.height = "64px"
+    customMarker.style.width = `37px`
+    customMarker.style.height = `48px`
 
     new mapboxgl.Marker(customMarker)
       .setLngLat([ lng, lat ])
@@ -287,12 +322,10 @@ export default class extends Controller {
   }
 
   async addWarning(event) {
+    //event.currentTarget.classList.add('anim-icon')
     const map = document.getElementById("route-map")
     const sections = this.routeValue.sections
     let id = 0
-
-    // on récupère les coordonnées GPS de l'utilisateur
-    // const navigatorPos = await this.getPosition()
     const navigatorPos = this.point.features[0].geometry.coordinates
 
     sections.forEach((section) => {
@@ -326,5 +359,10 @@ export default class extends Controller {
       }
       this.addSpecificMarkersToMap(navigatorPos[1], navigatorPos[0], event.currentTarget.dataset.routeImgValue)
     })
+  }
+  showAllMarkers(e) {
+    e.currentTarget.querySelector('.open').classList.toggle('d-none');
+    e.currentTarget.querySelector('.cross').classList.toggle('d-none');
+    document.querySelectorAll('.warnings-icons').forEach(icon => icon.classList.toggle('bottom-70'))
   }
 }

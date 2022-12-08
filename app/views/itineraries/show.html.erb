@@ -3,7 +3,7 @@
   <div class="maps" data-hello-target="maps">
     <% @itinerary.routes.each_with_index do |route, index| %>
       <div
-        id=<%= index %>
+        id="<%= index %>"
         class="map"
         data-controller="map"
         data-hello-target="map"
@@ -19,62 +19,55 @@
     <div class="itinerary-wrapper">
       <div class="itinerary-resume">
         <span class="p--tiny itinerary-infos">
-          <%= image_tag 'pin_start.png'%>
+          <%= image_tag 'departure_pin.svg'%>
           <%= @itinerary.departure %>
         </span>
         <span class="p--tiny itinerary-infos">
-          <%= image_tag 'pin_arrival.png', class:"pin_arrival" %>
+          <%= image_tag 'arrival_pin.svg' %>
           <%= @itinerary.arrival %>
         </span>
       </div>
       <div class="itineraries">
         <% @itinerary.routes.each_with_index do |route, index| %>
-
-        <div class="itinerary-card mt-3 d-flex gap-2" id="itinerary-<%= index %>">
-          <div class="left-stroke mr-2">
-          </div>
-          <div class="col">
-            <div class="itinerary-head">
-            <p class = "label m-0">
-              Le plus
-              <% if index == 0 %>
-                court
-              <% else %>
-                sécurisé
-            </p>
-            <%= link_to "Démarrer ce trajet", route_path(route), class:"btn-secondary" %>
+          <div class="itinerary-card mt-3 d-flex gap-2" id="itinerary-<%= index %>">
+            <div class="left-stroke mr-2">
             </div>
-            <div id=<%= index %> class="itinerary" data-action="click->hello#displayItinerary">
-              <span>
-                <%= image_tag 'bottom_distance.png' %>
-                <strong><%= route.distance.fdiv(1000).round(2) %></strong> km
-              </span>
-              <span>
-                <%= image_tag 'bottom_clock.png' %>
-                <strong><%= route.duration.fdiv(60).round %></strong> min
-              </span>
-              <span>
-                <%= image_tag 'cyclist_1_active.png', class:"logocyclability" %>
-                <% case route.weight.fdiv(1).round %>
-                <% when 0..300 %>
-                  <strong>0/5</strong>
-
-                <% when 301..400 %>
-                  <strong>1/5</strong>
-                <% when 401..600 %>
-                  <strong>2/5</strong>
-                <% when 601..900 %>
-                  <strong>3/5</strong>
-                <% when 901..1000 %>
-                  <strong>4/5</strong>
-                <% else %>
-                  <strong>5/5</strong>
-                <% end %>
-                <%#= route.weight.fdiv(1).round %></div>
-              </span>
+            <div class="col">
+              <div id=<%= index %> class="itinerary" data-action="click->hello#displayItinerary">
+                <span>
+                  <%= image_tag 'bottom_distance.png' , class:"bottom-img" %>
+                  <strong><%= route.distance.fdiv(1000).round(2) %></strong> km
+                </span>
+                <span>
+                  <%= image_tag 'bottom_clock.png' , class:"bottom-img" %>
+                  <strong><%= route.duration.fdiv(60).round %></strong> min
+                </span>
+                <span>
+                  <%= image_tag 'bottom_warning.png' , class:"bottom-img" %>
+                  <strong><%= route.section_warnings.count %></strong>
+                </span>
+                <span>
+                  <% case route.weight.fdiv(1).round %>
+                  <% when 0..200 %>
+                    <%= image_tag 'mini_veloo_green.svg', class:"logocyclability"%>
+                  <% when 201..460 %>
+                    <%= image_tag 'mini_veloo_green.svg', class:"logocyclability" %>
+                  <% when 461..600 %>
+                    <%= image_tag 'mini_veloo_yellow.svg', class:"logocyclability" %>
+                  <% when 601..700 %>
+                    <%= image_tag 'mini_veloo_yellow.svg', class:"logocyclability" %>
+                  <% when 701..1000 %>
+                    <%= image_tag 'mini_veloo_red.svg', class:"logocyclability" %>
+                  <% else %>
+                    <%= image_tag 'mini_veloo_red.svg', class:"logocyclability" %>
+                  <% end %>
+                </span>
+              </div>
+              <div class="itinerary-head">
+                <%= link_to "Démarrer ce trajet", route_path(route), class:"btn-secondary" %>
+              </div>
             </div>
           </div>
-        </div>
         <% end %>
       </div>
     </div>

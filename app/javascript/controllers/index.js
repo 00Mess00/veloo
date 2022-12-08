@@ -7,8 +7,11 @@ import { application } from "./application"
 import AddressAutocompleteController from "./address_autocomplete_controller"
 application.register("address-autocomplete", AddressAutocompleteController)
 
-import CyclabController from "./cyclab_controller"
-application.register("cyclab", CyclabController)
+import FinalMapController from "./final_map_controller"
+application.register("final-map", FinalMapController)
+
+import GreetController from "./greet_controller"
+application.register("greet", GreetController)
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
@@ -18,6 +21,3 @@ application.register("map", MapController)
 
 import RouteController from "./route_controller"
 application.register("route", RouteController)
-
-import WarningsController from "./warnings_controller"
-application.register("warnings", WarningsController)
