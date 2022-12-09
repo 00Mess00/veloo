@@ -195,24 +195,25 @@ export default class extends Controller {
       this.map.getSource('point').setData(this.point);
       if (this.counter <= this.steps) {
         requestAnimationFrame(animate);
-
         this.counter = this.counter + 1;
         this.temp_counter = this.temp_counter + 1;
 
-        this.newTotalDistance = (Math.round(this.totalDistance * 1000 / 100) - Math.round((this.counter * this.totalDistance / this.steps) * 1000 / 100)) / 10
-        this.newDistance = (Math.round(this.routeValue.sections[this.index].distance / 10) - Math.round(Math.round(this.temp_counter * this.routeValue.sections[this.index].distance / this.step) / 10)) * 10
-
-        this.distanceTarget.innerText = this.newDistance
-        this.totalDistanceTarget.innerText = this.newTotalDistance
-
-        if (this.temp_counter >= this.step) {
-          this.index += 1
-          this.updateInstructions(this.index)
-          this.step = sectionCoordinates[this.index].steps
-          this.temp_counter = 0
-        }
-        if (this.counter === Math.round(this.steps)) {
-          window.location.replace(`/arrival?lat=${this.point.features[0].geometry.coordinates[1]}&lng=${this.point.features[0].geometry.coordinates[0]}`)
+        try {
+          this.newTotalDistance = (Math.round(this.totalDistance * 1000 / 100) - Math.round((this.counter * this.totalDistance / this.steps) * 1000 / 100)) / 10
+          this.newDistance = (Math.round(this.routeValue.sections[this.index].distance / 10) - Math.round(Math.round(this.temp_counter * this.routeValue.sections[this.index].distance / this.step) / 10)) * 10
+          this.distanceTarget.innerText = this.newDistance
+          this.totalDistanceTarget.innerText = this.newTotalDistance
+          if (this.temp_counter >= this.step) {
+            this.index += 1
+            this.updateInstructions(this.index)
+            this.step = sectionCoordinates[this.index].steps
+            this.temp_counter = 0
+          }
+          if (this.counter === Math.round(this.steps)) {
+            window.location.replace(`/arrival?lat=${this.point.features[0].geometry.coordinates[1]}&lng=${this.point.features[0].geometry.coordinates[0]}`)
+          }
+        } catch (e) {
+          console.log("ta race")
         }
       }
     }
@@ -321,6 +322,7 @@ export default class extends Controller {
     const sections = this.routeValue.sections
     let id = 0
     const navigatorPos = this.point.features[0].geometry.coordinates
+    this.addSpecificMarkersToMap(navigatorPos[1], navigatorPos[0], event.currentTarget.dataset.routeImgValue)
 
     sections.forEach((section) => {
       const geom = section.geometry
@@ -351,7 +353,6 @@ export default class extends Controller {
         })
 
       }
-      this.addSpecificMarkersToMap(navigatorPos[1], navigatorPos[0], event.currentTarget.dataset.routeImgValue)
     })
   }
   showAllMarkers(e) {
