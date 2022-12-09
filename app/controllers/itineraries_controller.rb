@@ -18,7 +18,7 @@ class ItinerariesController < ApplicationController
 
   def show
     @itinerary = Itinerary.find(params[:id])
-    @markers = @itinerary.routes.map do |route|
+    @markers = @itinerary.routes.first(2).map do |route|
       [
         {
           lat: route.departure_lat,

@@ -60,11 +60,10 @@ export default class extends Controller {
     this.routeValue.sections.forEach((section) => {
       let coordinatesFromPolyline = polyline.decode(section.geometry).map((a) => { return a.reverse() })
       let steps = 0;
-      console.log(coordinatesFromPolyline)
       if (coordinatesFromPolyline.length > 1) {
         const sectionLine = turf.lineString(coordinatesFromPolyline);
         const sectionLineDistance = turf.length(sectionLine);
-        steps = sectionLineDistance * 3000;
+        steps = sectionLineDistance * 5000;
       }
 
       const colors = {
@@ -96,7 +95,6 @@ export default class extends Controller {
       this.steps += s.steps
     })
     // this.steps = this.steps * 100
-    console.log(this.steps)
 
     const line = turf.lineString(this.routeCoordinates);
     const lineDistance = turf.length(line);
@@ -213,10 +211,7 @@ export default class extends Controller {
           this.step = sectionCoordinates[this.index].steps
           this.temp_counter = 0
         }
-        console.log(this.counter)
-        console.log(this.steps)
         if (this.counter === Math.round(this.steps)) {
-          console.log("Hello world")
           window.location.replace(`/arrival?lat=${this.point.features[0].geometry.coordinates[1]}&lng=${this.point.features[0].geometry.coordinates[0]}`)
         }
       }
@@ -232,7 +227,6 @@ export default class extends Controller {
       this.imageTarget.src = this.rightValue
     }
     if (this.routeValue.sections[index + 1].instruction == "straight" || this.routeValue.sections[index + 1].instruction === null) {
-      console.log(this.straightValue)
       this.imageTarget.src = this.straightValue
     }
     if (this.routeValue.sections[index + 1].instruction == "sharp left" || this.routeValue.sections[index + 1].instruction == "left" || this.routeValue.sections[index + 1].instruction == "slight left") {
